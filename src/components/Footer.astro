@@ -1,0 +1,40 @@
+---
+import { SITE_AUTHOR, SOCIAL_LINKS } from '../consts';
+import { Rss } from '@lucide/astro';
+import GithubIcon from './GithubIcon.astro';
+
+const currentYear = new Date().getFullYear();
+---
+
+<footer class="border-t border-neutral-200/80 dark:border-neutral-800/80 mt-20 bg-neutral-50/50 dark:bg-neutral-900/50">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 py-12 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-neutral-500 dark:text-neutral-400">
+    <div class="flex flex-col sm:flex-row items-center gap-2 sm:gap-4">
+      <span class="font-medium text-neutral-700 dark:text-neutral-300">
+        © {currentYear} {SITE_AUTHOR}
+      </span>
+      <span class="hidden sm:inline text-neutral-300 dark:text-neutral-700">•</span>
+      <span>Documenting the journey, one step at a time.</span>
+    </div>
+
+    <div class="flex items-center gap-4">
+      <a
+        href="/rss.xml"
+        class="inline-flex items-center gap-1.5 hover:text-orange-500 dark:hover:text-orange-400 transition-colors"
+        aria-label="RSS Feed"
+      >
+        <Rss class="w-3.5 h-3.5" />
+        <span>RSS</span>
+      </a>
+      <a
+        href={SOCIAL_LINKS.github}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="inline-flex items-center gap-1.5 hover:text-neutral-900 dark:hover:text-white transition-colors"
+        aria-label="GitHub Profile"
+      >
+        <GithubIcon class="w-3.5 h-3.5" />
+        <span>GitHub</span>
+      </a>
+    </div>
+  </div>
+</footer>

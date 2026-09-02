@@ -1,0 +1,72 @@
+---
+import { getCollection } from 'astro:content';
+import { ArrowLeft, ArrowRight } from '@lucide/astro';
+
+export interface Props {
+  seriesId: string;
+  currentOrder: number;
+}
+
+const { seriesId, currentOrder } = Astro.props;
+
+const seriesPosts = await getCollection('blog', ({ data }) => {
+  return !data.draft && data.series && data.series.id === seriesId;
+});
+
+seriesPosts.sort((a, b) => (a.data.series?.order ?? 0) - (b.data.series?.order ?? 0));
+
+const prevPost = seriesPosts.find((p) => p.data.series?.order === currentOrder - 1);
+const nextPost = seriesPosts.find((p) => p.data.series?.order === currentOrder + 1);
+
+if (!prevPost && !nextPost) {
+  return null;
+}
+---
+
+<div class="mt-12 pt-8 border-t border-neutral-200 dark:border-neutral-800">
+  <div class="text-xs font-semibold text-neutral-400 dark:text-neutral-500 uppercase tracking-wider mb-4">
+    Continue Learning Track
+  </div>
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+    {/* Previous Chapter */}
+    {
+      prevPost ? (
+        <a
+          href={`/blog/${prevPost.id}/`}
+          class="flex flex-col p-4 rounded-xl border border-neutral-200 dark:border-neutral-800 bg-neutral-50/50 dark:bg-neutral-900/30 hover:border-blue-500/50 dark:hover:border-blue-500/50 transition-colors group"
+        >
+          <div class="flex items-center gap-1.5 text-xs text-neutral-500 dark:text-neutral-400 mb-1 group-hover:text-blue-600 dark:group-hover:text-blue-400">
+            <ArrowLeft class="w-3.5 h-3.5 transition-transform group-hover:-translate-x-1" />
+            <span>Previous Chapter</span>
+          </div>
+          <span class="text-sm font-semibold text-neutral-900 dark:text-white line-clamp-1">
+            {prevPost.data.title}
+          </span>
+        </a>
+      ) : (
+        <div class="hidden sm:block" />
+      )
+    }
+
+    {/* Next Chapter */}
+    {
+      nextPost ? (
+        <a
+          href={`/blog/${nextPost.id}/`}
+          class="flex flex-col p-4 rounded-xl border border-neutral-200 dark:border-neutral-800 bg-neutral-50/50 dark:bg-neutral-900/30 hover:border-blue-500/50 dark:hover:border-blue-500/50 transition-colors group text-right sm:text-right"
+        >
+          <div class="flex items-center justify-end gap-1.5 text-xs text-neutral-500 dark:text-neutral-400 mb-1 group-hover:text-blue-600 dark:group-hover:text-blue-400">
+            <span>Next Chapter</span>
+            <ArrowRight class="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" />
+          </div>
+          <span class="text-sm font-semibold text-neutral-900 dark:text-white line-clamp-1">
+            {nextPost.data.title}
+          </span>
+        </a>
+      ) : (
+        <div class="hidden sm:block" />
+      )
+    }
+  </div>
+</div>

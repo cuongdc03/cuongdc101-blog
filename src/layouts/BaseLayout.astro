@@ -1,0 +1,76 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import SearchModal from '../components/SearchModal.astro';
+import '../styles/global.css';
+
+export interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+  articleDate?: string;
+}
+
+const { title, description, image, articleDate } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <BaseHead title={title} description={description} image={image} articleDate={articleDate} />
+  </head>
+  <body class="min-h-screen flex flex-col bg-neutral-50 text-neutral-900 dark:bg-neutral-950 dark:text-neutral-100 antialiased transition-colors selection:bg-blue-500 selection:text-white">
+    <Header />
+    <main class="flex-1 w-full max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
+      <slot />
+    </main>
+    <Footer />
+    <SearchModal />
+
+    <!-- Code Copy Button Enhancement Script -->
+    <script>
+      function setupCopyButtons() {
+        const codeBlocks = document.querySelectorAll('pre');
+        codeBlocks.forEach((pre) => {
+          if (pre.dataset.hasCopyButton) return;
+          pre.dataset.hasCopyButton = 'true';
+          pre.classList.add('relative', 'group');
+
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className =
+            'copy-btn absolute top-2.5 right-2.5 px-2 py-1 rounded-md text-[11px] font-mono bg-neutral-800/80 hover:bg-neutral-750 text-neutral-300 border border-neutral-700/60 opacity-0 group-hover:opacity-100 transition-all duration-150 flex items-center gap-1 shadow-sm';
+          btn.innerHTML = `
+            <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+            <span>Copy</span>
+          `;
+
+          btn.addEventListener('click', async () => {
+            const code = pre.querySelector('code')?.innerText || pre.innerText;
+            try {
+              await navigator.clipboard.writeText(code);
+              btn.innerHTML = `
+                <svg class="w-3.5 h-3.5 text-emerald-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                <span class="text-emerald-400">Copied!</span>
+              `;
+              setTimeout(() => {
+                btn.innerHTML = `
+                  <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+                  <span>Copy</span>
+                `;
+              }, 2000);
+            } catch (err) {
+              console.error('Copy failed:', err);
+            }
+          });
+
+          pre.appendChild(btn);
+        });
+      }
+
+      setupCopyButtons();
+      document.addEventListener('astro:after-swap', setupCopyButtons);
+    </script>
+  </body>
+</html>

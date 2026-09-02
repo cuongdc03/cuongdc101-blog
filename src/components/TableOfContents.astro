@@ -1,0 +1,116 @@
+---
+import { ListCollapse, ChevronDown } from '@lucide/astro';
+
+export interface Props {
+  headings: {
+    depth: number;
+    slug: string;
+    text: string;
+  }[];
+}
+
+const { headings } = Astro.props;
+const toc = headings.filter((h) => h.depth === 2 || h.depth === 3);
+
+if (toc.length < 2) {
+  return null;
+}
+---
+
+<!-- Desktop Sticky TOC Sidebar -->
+<aside class="hidden lg:block sticky top-24 max-h-[calc(100vh-8rem)] overflow-y-auto pr-4">
+  <div class="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-neutral-400 dark:text-neutral-500 mb-3">
+    <ListCollapse class="w-4 h-4" />
+    <span>Table of Contents</span>
+  </div>
+
+  <nav class="toc-nav space-y-1 text-sm border-l border-neutral-200 dark:border-neutral-800 pl-3">
+    {
+      toc.map((heading) => (
+        <a
+          href={`#${heading.slug}`}
+          data-slug={heading.slug}
+          class={`toc-link block py-1 transition-colors leading-snug ${
+            heading.depth === 3
+              ? 'pl-3 text-xs text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white'
+              : 'text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white font-medium'
+          }`}
+        >
+          {heading.text}
+        </a>
+      ))
+    }
+  </nav>
+</aside>
+
+<!-- Mobile Collapsible TOC -->
+<div class="lg:hidden my-6 border border-neutral-200 dark:border-neutral-800 rounded-xl bg-neutral-50/50 dark:bg-neutral-900/30 overflow-hidden">
+  <details class="group p-4">
+    <summary class="flex items-center justify-between cursor-pointer list-none text-sm font-semibold text-neutral-800 dark:text-neutral-200">
+      <div class="flex items-center gap-2">
+        <ListCollapse class="w-4 h-4 text-neutral-500" />
+        <span>Table of Contents ({toc.length} sections)</span>
+      </div>
+      <ChevronDown class="w-4 h-4 text-neutral-400 transition-transform group-open:rotate-180" />
+    </summary>
+
+    <nav class="mt-4 pt-3 border-t border-neutral-200 dark:border-neutral-800 space-y-1.5 text-sm">
+      {
+        toc.map((heading) => (
+          <a
+            href={`#${heading.slug}`}
+            class={`block py-1 text-neutral-600 dark:text-neutral-400 hover:text-blue-600 dark:hover:text-blue-400 ${
+              heading.depth === 3 ? 'pl-4 text-xs' : 'font-medium'
+            }`}
+          >
+            {heading.text}
+          </a>
+        ))
+      }
+    </nav>
+  </details>
+</div>
+
+<script>
+  function setupTocScrollSpy() {
+    const links = document.querySelectorAll<HTMLAnchorElement>('.toc-link');
+    if (links.length === 0) return;
+
+    const headingElements = Array.from(links)
+      .map((link) => {
+        const slug = link.getAttribute('data-slug');
+        return slug ? document.getElementById(slug) : null;
+      })
+      .filter((el): el is HTMLElement => el !== null);
+
+    if (headingElements.length === 0) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const id = entry.target.getAttribute('id');
+            links.forEach((link) => {
+              if (link.getAttribute('data-slug') === id) {
+                link.classList.add('text-blue-600', 'dark:text-blue-400', 'font-semibold');
+                link.classList.remove('text-neutral-600', 'text-neutral-500', 'dark:text-neutral-400');
+              } else {
+                link.classList.remove('text-blue-600', 'dark:text-blue-400', 'font-semibold');
+                link.classList.add('text-neutral-600', 'dark:text-neutral-400');
+              }
+            });
+          }
+        });
+      },
+      {
+        rootMargin: '0px 0px -75% 0px',
+        threshold: 0.1,
+      }
+    );
+
+    headingElements.forEach((el) => observer.observe(el));
+  }
+
+  setupTocScrollSpy();
+  document.addEventListener('astro:after-swap', setupTocScrollSpy);
+</script>

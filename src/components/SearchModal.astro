@@ -1,0 +1,274 @@
+---
+import { Search, X } from '@lucide/astro';
+---
+
+<div
+  id="search-modal"
+  class="fixed inset-0 z-50 hidden bg-neutral-900/60 backdrop-blur-sm transition-opacity duration-200"
+  role="dialog"
+  aria-modal="true"
+>
+  <div class="min-h-screen px-4 text-center flex items-start justify-center pt-20 sm:pt-28">
+    <div
+      id="search-dialog"
+      class="w-full max-w-2xl transform overflow-hidden rounded-2xl bg-white dark:bg-neutral-900 text-left align-middle shadow-2xl border border-neutral-200 dark:border-neutral-800 transition-all"
+    >
+      <!-- Search Input Area -->
+      <div class="relative flex items-center border-b border-neutral-200 dark:border-neutral-800 px-4">
+        <Search class="w-5 h-5 text-neutral-400 dark:text-neutral-500 mr-3 shrink-0" />
+        <input
+          id="search-input"
+          type="text"
+          placeholder="Search articles, learning tracks, concepts..."
+          class="w-full py-4 text-base bg-transparent text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-500 focus:outline-none"
+          autocomplete="off"
+        />
+        <button
+          id="close-search"
+          type="button"
+          class="p-1 rounded-md text-neutral-400 hover:text-neutral-600 dark:hover:text-neutral-200"
+          aria-label="Close search"
+        >
+          <X class="w-5 h-5" />
+        </button>
+      </div>
+
+      <!-- Results Container -->
+      <div id="search-results" class="max-h-96 overflow-y-auto p-4 space-y-2">
+        <p class="text-sm text-neutral-500 dark:text-neutral-400 text-center py-6">
+          Type keywords or tags to find articles and learning paths...
+        </p>
+      </div>
+
+      <!-- Footer Info -->
+      <div class="flex items-center justify-between border-t border-neutral-100 dark:border-neutral-800/80 px-4 py-3 text-xs text-neutral-500 dark:text-neutral-400 bg-neutral-50 dark:bg-neutral-900/50">
+        <div class="flex items-center gap-2">
+          <span>Navigate with</span>
+          <kbd class="px-1.5 py-0.5 rounded bg-neutral-200 dark:bg-neutral-800 font-mono text-[10px]">↑</kbd>
+          <kbd class="px-1.5 py-0.5 rounded bg-neutral-200 dark:bg-neutral-800 font-mono text-[10px]">↓</kbd>
+          <span>to select</span>
+          <kbd class="px-1.5 py-0.5 rounded bg-neutral-200 dark:bg-neutral-800 font-mono text-[10px]">↵</kbd>
+        </div>
+        <div>
+          <span>Close with</span>
+          <kbd class="px-1.5 py-0.5 rounded bg-neutral-200 dark:bg-neutral-800 font-mono text-[10px]">ESC</kbd>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  interface SearchItem {
+    type: 'post' | 'series';
+    title: string;
+    description: string;
+    tags: string[];
+    url: string;
+    date?: string;
+    level?: string;
+    series?: { id: string; name: string; order: number } | null;
+  }
+
+  function setupSearch() {
+    const modal = document.getElementById('search-modal');
+    const input = document.getElementById('search-input') as HTMLInputElement | null;
+    const resultsContainer = document.getElementById('search-results');
+    const closeBtn = document.getElementById('close-search');
+    const triggerButtons = document.querySelectorAll('[data-search-trigger]');
+
+    if (!modal || !input || !resultsContainer) return;
+
+    let searchData: SearchItem[] = [];
+    let isLoaded = false;
+    let selectedIndex = -1;
+
+    async function loadSearchData() {
+      if (isLoaded) return;
+      try {
+        const res = await fetch('/api/search.json');
+        if (res.ok) {
+          searchData = await res.json();
+          isLoaded = true;
+        }
+      } catch (err) {
+        console.error('Failed to load search index:', err);
+      }
+    }
+
+    function openModal() {
+      modal?.classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+      loadSearchData();
+      setTimeout(() => input?.focus(), 50);
+      renderResults(input?.value.trim() || '');
+    }
+
+    function closeModal() {
+      modal?.classList.add('hidden');
+      document.body.style.overflow = '';
+      if (input) input.value = '';
+      selectedIndex = -1;
+    }
+
+    triggerButtons.forEach((btn) => {
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        openModal();
+      });
+    });
+
+    closeBtn?.addEventListener('click', closeModal);
+
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal || (e.target as HTMLElement).classList.contains('min-h-screen')) {
+        closeModal();
+      }
+    });
+
+    // Keyboard shortcuts: ⌘K or / to open, ESC to close
+    document.addEventListener('keydown', (e) => {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault();
+        if (modal.classList.contains('hidden')) {
+          openModal();
+        } else {
+          closeModal();
+        }
+      } else if (e.key === '/' && modal.classList.contains('hidden')) {
+        const activeEl = document.activeElement;
+        const isInput = activeEl instanceof HTMLInputElement || activeEl instanceof HTMLTextAreaElement;
+        if (!isInput) {
+          e.preventDefault();
+          openModal();
+        }
+      } else if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
+        closeModal();
+      }
+    });
+
+    // Search input handling
+    input.addEventListener('input', () => {
+      selectedIndex = -1;
+      renderResults(input.value.trim());
+    });
+
+    // Keyboard navigation in results
+    input.addEventListener('keydown', (e) => {
+      const items = resultsContainer.querySelectorAll<HTMLAnchorElement>('.search-result-item');
+      if (items.length === 0) return;
+
+      if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        selectedIndex = (selectedIndex + 1) % items.length;
+        updateSelected(items);
+      } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        selectedIndex = (selectedIndex - 1 + items.length) % items.length;
+        updateSelected(items);
+      } else if (e.key === 'Enter') {
+        e.preventDefault();
+        if (selectedIndex >= 0 && items[selectedIndex]) {
+          items[selectedIndex].click();
+        } else if (items.length > 0) {
+          items[0].click();
+        }
+      }
+    });
+
+    function updateSelected(items: NodeListOf<HTMLAnchorElement>) {
+      items.forEach((item, idx) => {
+        if (idx === selectedIndex) {
+          item.classList.add('bg-blue-50', 'dark:bg-blue-900/30', 'border-blue-300', 'dark:border-blue-700');
+          item.scrollIntoView({ block: 'nearest' });
+        } else {
+          item.classList.remove('bg-blue-50', 'dark:bg-blue-900/30', 'border-blue-300', 'dark:border-blue-700');
+        }
+      });
+    }
+
+    function renderResults(query: string) {
+      if (!resultsContainer) return;
+
+      if (!query) {
+        // Show recent / featured items
+        const previewItems = searchData.slice(0, 5);
+        if (previewItems.length === 0) {
+          resultsContainer.innerHTML = `
+            <p class="text-sm text-neutral-500 dark:text-neutral-400 text-center py-6">
+              Type to search through learning tracks and articles...
+            </p>`;
+          return;
+        }
+
+        resultsContainer.innerHTML = `
+          <div class="px-2 py-1 text-xs font-semibold text-neutral-400 dark:text-neutral-500 uppercase tracking-wider">
+            Featured / Recent
+          </div>
+          ${previewItems.map((item, idx) => buildItemHTML(item, idx)).join('')}
+        `;
+        return;
+      }
+
+      const q = query.toLowerCase();
+      const filtered = searchData.filter((item) => {
+        return (
+          item.title.toLowerCase().includes(q) ||
+          item.description.toLowerCase().includes(q) ||
+          item.tags.some((t) => t.toLowerCase().includes(q)) ||
+          (item.series && item.series.name.toLowerCase().includes(q))
+        );
+      });
+
+      if (filtered.length === 0) {
+        resultsContainer.innerHTML = `
+          <div class="text-center py-8 text-neutral-500 dark:text-neutral-400">
+            <p class="text-sm font-medium">No results found for "${query}"</p>
+            <p class="text-xs mt-1 text-neutral-400">Try searching for concepts like "docker", "caching", or "containers"</p>
+          </div>
+        `;
+        return;
+      }
+
+      resultsContainer.innerHTML = `
+        <div class="px-2 py-1 text-xs font-semibold text-neutral-400 dark:text-neutral-500 uppercase tracking-wider">
+          Found ${filtered.length} ${filtered.length === 1 ? 'match' : 'matches'}
+        </div>
+        ${filtered.map((item, idx) => buildItemHTML(item, idx)).join('')}
+      `;
+    }
+
+    function buildItemHTML(item: SearchItem, idx: number): string {
+      const isSeries = item.type === 'series';
+      const badge = isSeries
+        ? `<span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-medium bg-purple-100 text-purple-800 dark:bg-purple-900/40 dark:text-purple-300">Learning Path</span>`
+        : item.series
+          ? `<span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-medium bg-blue-100 text-blue-800 dark:bg-blue-900/40 dark:text-blue-300">Part ${item.series.order} • ${item.series.name}</span>`
+          : `<span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-medium bg-neutral-100 text-neutral-700 dark:bg-neutral-800 dark:text-neutral-300">Article</span>`;
+
+      return `
+        <a
+          href="${item.url}"
+          data-index="${idx}"
+          class="search-result-item block p-3 rounded-xl border border-transparent hover:bg-neutral-100 dark:hover:bg-neutral-800/80 transition-colors group"
+        >
+          <div class="flex items-center justify-between gap-2 mb-1">
+            <div class="flex items-center gap-2">
+              ${badge}
+            </div>
+            ${item.date ? `<span class="text-xs text-neutral-400 dark:text-neutral-500">${item.date}</span>` : ''}
+          </div>
+          <h4 class="text-sm font-semibold text-neutral-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+            ${item.title}
+          </h4>
+          <p class="text-xs text-neutral-500 dark:text-neutral-400 line-clamp-1 mt-0.5">
+            ${item.description}
+          </p>
+        </a>
+      `;
+    }
+  }
+
+  setupSearch();
+  document.addEventListener('astro:after-swap', setupSearch);
+</script>

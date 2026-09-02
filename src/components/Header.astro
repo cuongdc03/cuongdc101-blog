@@ -1,0 +1,140 @@
+---
+import { NAV_ITEMS, SOCIAL_LINKS } from '../consts';
+import ThemeToggle from './ThemeToggle.astro';
+import { Search, Terminal, Menu, X } from '@lucide/astro';
+import GithubIcon from './GithubIcon.astro';
+
+const pathname = Astro.url.pathname;
+const isCurrent = (href: string) => {
+  if (href === '/') return pathname === '/';
+  return pathname.startsWith(href);
+};
+---
+
+<header class="sticky top-0 z-40 w-full border-b border-neutral-200/80 dark:border-neutral-800/80 bg-white/80 dark:bg-neutral-900/80 backdrop-blur-md transition-colors">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
+    <!-- Brand Logo -->
+    <a href="/" class="flex items-center gap-2.5 group shrink-0">
+      <div class="w-8 h-8 rounded-lg bg-blue-600 dark:bg-blue-500 text-white flex items-center justify-center font-bold shadow-sm shadow-blue-500/20 group-hover:scale-105 transition-transform">
+        <Terminal class="w-4 h-4" />
+      </div>
+      <div class="flex flex-col">
+        <span class="font-bold text-base tracking-tight text-neutral-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+          cuongdc101
+        </span>
+        <span class="text-[10px] text-neutral-400 dark:text-neutral-500 -mt-1 font-mono">
+          dev & learning notes
+        </span>
+      </div>
+    </a>
+
+    <!-- Desktop Nav Links -->
+    <nav class="hidden md:flex items-center gap-1 text-sm font-medium">
+      {
+        NAV_ITEMS.map((item) => {
+          const active = isCurrent(item.href);
+          return (
+            <a
+              href={item.href}
+              class={`px-3 py-1.5 rounded-lg transition-colors ${
+                active
+                  ? 'text-blue-600 dark:text-blue-400 bg-blue-50/80 dark:bg-blue-950/40 font-semibold'
+                  : 'text-neutral-600 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-100 hover:bg-neutral-100/80 dark:hover:bg-neutral-800/50'
+              }`}
+            >
+              {item.text}
+            </a>
+          );
+        })
+      }
+    </nav>
+
+    <!-- Header Actions (Search, GitHub, Theme, Mobile Menu) -->
+    <div class="flex items-center gap-2">
+      <!-- Search Trigger Button -->
+      <button
+        type="button"
+        data-search-trigger
+        aria-label="Search posts and topics"
+        class="flex items-center gap-2 px-2.5 py-1.5 rounded-lg border border-neutral-200 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-800/60 hover:bg-neutral-100 dark:hover:bg-neutral-800 text-neutral-500 dark:text-neutral-400 text-xs transition-colors"
+      >
+        <Search class="w-4 h-4" />
+        <span class="hidden sm:inline">Search</span>
+        <kbd class="hidden sm:inline-block px-1.5 py-0.5 rounded bg-neutral-200 dark:bg-neutral-700 font-mono text-[10px]">⌘K</kbd>
+      </button>
+
+      <!-- GitHub Link -->
+      <a
+        href={SOCIAL_LINKS.github}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="GitHub Profile"
+        class="p-2 rounded-lg text-neutral-600 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-100 hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors"
+      >
+        <GithubIcon class="w-5 h-5" />
+      </a>
+
+      <!-- Theme Switcher -->
+      <ThemeToggle />
+
+      <!-- Mobile Hamburger Button -->
+      <button
+        id="mobile-menu-btn"
+        type="button"
+        class="md:hidden p-2 rounded-lg text-neutral-600 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-100 hover:bg-neutral-100 dark:hover:bg-neutral-800 focus:outline-none"
+        aria-label="Open menu"
+      >
+        <Menu id="menu-icon-open" class="w-5 h-5" />
+        <X id="menu-icon-close" class="w-5 h-5 hidden" />
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile Dropdown Nav -->
+  <div id="mobile-menu" class="hidden md:hidden border-b border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 px-4 py-3 space-y-1">
+    {
+      NAV_ITEMS.map((item) => {
+        const active = isCurrent(item.href);
+        return (
+          <a
+            href={item.href}
+            class={`block px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+              active
+                ? 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-950/40 font-semibold'
+                : 'text-neutral-600 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-white hover:bg-neutral-100 dark:hover:bg-neutral-800'
+            }`}
+          >
+            {item.text}
+          </a>
+        );
+      })
+    }
+  </div>
+</header>
+
+<script>
+  function setupMobileMenu() {
+    const btn = document.getElementById('mobile-menu-btn');
+    const menu = document.getElementById('mobile-menu');
+    const iconOpen = document.getElementById('menu-icon-open');
+    const iconClose = document.getElementById('menu-icon-close');
+
+    if (!btn || !menu || !iconOpen || !iconClose) return;
+
+    btn.addEventListener('click', () => {
+      const isExpanded = !menu.classList.contains('hidden');
+      if (isExpanded) {
+        menu.classList.add('hidden');
+        iconOpen.classList.remove('hidden');
+        iconClose.classList.add('hidden');
+      } else {
+        menu.classList.remove('hidden');
+        iconOpen.classList.add('hidden');
+        iconClose.classList.remove('reverse', 'hidden');
+      }
+    });
+  }
+
+  setupMobileMenu();
+  document.addEventListener('astro:after-swap', setupMobileMenu);
+</script>

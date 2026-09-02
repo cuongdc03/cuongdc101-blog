@@ -1,0 +1,126 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+import { ArrowRight, Clock, Milestone } from '@lucide/astro';
+
+const allSeries = await getCollection('series');
+allSeries.sort((a, b) => a.data.order - b.data.order);
+
+const allPosts = await getCollection('blog', ({ data }) => !data.draft);
+
+const seriesWithPosts = allSeries.map((s) => {
+  const chapters = allPosts.filter((p) => p.data.series?.id === s.id);
+  chapters.sort((a, b) => (a.data.series?.order ?? 0) - (b.data.series?.order ?? 0));
+  return {
+    ...s,
+    chapters,
+  };
+});
+---
+
+<BaseLayout
+  title="Learning Paths & Series"
+  description="Structured, sequential curricula and engineering deep dives designed to take you from foundational principles to production mastery."
+>
+  <div class="max-w-4xl mx-auto">
+    <!-- Header -->
+    <header class="mb-12 pb-8 border-b border-neutral-200 dark:border-neutral-800">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-blue-50 text-blue-700 dark:bg-blue-950/60 dark:text-blue-300 border border-blue-200 dark:border-blue-800 mb-3">
+        <Milestone class="w-3.5 h-3.5" />
+        <span>Curated Roadmaps</span>
+      </div>
+
+      <h1 class="text-3xl sm:text-4xl font-extrabold text-neutral-900 dark:text-white tracking-tight mb-4">
+        Learning Paths & Tracks
+      </h1>
+
+      <p class="text-neutral-600 dark:text-neutral-400 text-base sm:text-lg leading-relaxed max-w-2xl">
+        Rather than fragmented one-off posts, these tracks are sequential journeys. Each series builds systematically upon the previous chapter.
+      </p>
+    </header>
+
+    <!-- Series Roadmaps List -->
+    <div class="space-y-12">
+      {
+        seriesWithPosts.map((s) => {
+          const firstChapter = s.chapters[0];
+          return (
+            <section class="p-6 sm:p-8 rounded-3xl border border-neutral-200/80 dark:border-neutral-800/80 bg-white dark:bg-neutral-900/50 shadow-sm">
+              <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+                <div>
+                  <div class="flex items-center gap-2 mb-2">
+                    <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-blue-100 dark:bg-blue-900/50 text-blue-800 dark:text-blue-300">
+                      {s.data.level}
+                    </span>
+                    {s.data.estimatedHours && (
+                      <span class="text-xs text-neutral-500 dark:text-neutral-400 flex items-center gap-1">
+                        <Clock class="w-3.5 h-3.5" />
+                        {s.data.estimatedHours}
+                      </span>
+                    )}
+                  </div>
+
+                  <h2 class="text-2xl font-bold text-neutral-900 dark:text-white">
+                    <a href={`/series/${s.id}/`} class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+                      {s.data.title}
+                    </a>
+                  </h2>
+                </div>
+
+                {firstChapter && (
+                  <a
+                    href={`/blog/${firstChapter.id}/`}
+                    class="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold shadow-sm transition-transform hover:scale-[1.02] shrink-0"
+                  >
+                    <span>Start Track</span>
+                    <ArrowRight class="w-3.5 h-3.5" />
+                  </a>
+                )}
+              </div>
+
+              <p class="text-sm text-neutral-600 dark:text-neutral-400 mb-6 leading-relaxed">
+                {s.data.description}
+              </p>
+
+              <!-- Chapters Timeline -->
+              <div class="space-y-3 pt-6 border-t border-neutral-100 dark:border-neutral-800">
+                <div class="text-xs font-bold uppercase tracking-wider text-neutral-400 dark:text-neutral-500">
+                  Track Syllabus ({s.chapters.length} {s.chapters.length === 1 ? 'part' : 'parts'})
+                </div>
+
+                <div class="grid grid-cols-1 gap-2.5">
+                  {s.chapters.map((chapter) => (
+                    <a
+                      href={`/blog/${chapter.id}/`}
+                      class="flex items-center justify-between p-3 rounded-xl border border-neutral-150 dark:border-neutral-800/80 bg-neutral-50/70 dark:bg-neutral-900/40 hover:bg-blue-50 dark:hover:bg-blue-950/30 hover:border-blue-300 dark:hover:border-blue-800 transition-colors group"
+                    >
+                      <div class="flex items-center gap-3 overflow-hidden">
+                        <span class="w-7 h-7 rounded-lg bg-neutral-200 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 flex items-center justify-center text-xs font-mono font-bold group-hover:bg-blue-600 group-hover:text-white transition-colors shrink-0">
+                          {chapter.data.series?.order}
+                        </span>
+                        <span class="text-sm font-medium text-neutral-800 dark:text-neutral-200 group-hover:text-blue-600 dark:group-hover:text-blue-400 truncate">
+                          {chapter.data.title}
+                        </span>
+                      </div>
+
+                      <div class="flex items-center gap-2 text-xs text-neutral-400 shrink-0 ml-3">
+                        <span class="hidden sm:inline group-hover:text-blue-500 transition-colors">Read</span>
+                        <ArrowRight class="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+                      </div>
+                    </a>
+                  ))}
+
+                  {s.chapters.length === 0 && (
+                    <p class="text-xs text-neutral-400 italic py-2">
+                      New chapters are currently in progress!
+                    </p>
+                  )}
+                </div>
+              </div>
+            </section>
+          );
+        })
+      }
+    </div>
+  </div>
+</BaseLayout>

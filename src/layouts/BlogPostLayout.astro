@@ -1,0 +1,135 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import FormattedDate from '../components/FormattedDate.astro';
+import TableOfContents from '../components/TableOfContents.astro';
+import SeriesBanner from '../components/SeriesBanner.astro';
+import SeriesNav from '../components/SeriesNav.astro';
+import { ArrowLeft, Clock, Calendar, ChevronRight } from '@lucide/astro';
+
+export interface Props {
+  title: string;
+  description: string;
+  pubDate: Date;
+  updatedDate?: Date;
+  heroImage?: string;
+  tags?: string[];
+  series?: {
+    id: string;
+    order: number;
+    title?: string;
+  };
+  headings: {
+    depth: number;
+    slug: string;
+    text: string;
+  }[];
+  body?: string;
+}
+
+const {
+  title,
+  description,
+  pubDate,
+  updatedDate,
+  heroImage,
+  tags = [],
+  series,
+  headings = [],
+  body = '',
+} = Astro.props;
+
+// Reading time calculation
+const wordCount = body ? body.split(/\s+/g).length : 300;
+const readingTime = Math.max(1, Math.ceil(wordCount / 200));
+---
+
+<BaseLayout title={title} description={description} image={heroImage} articleDate={pubDate.toISOString()}>
+  <!-- Breadcrumb Navigation -->
+  <nav class="flex items-center gap-2 text-xs text-neutral-500 dark:text-neutral-400 mb-6">
+    <a href="/blog" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors flex items-center gap-1">
+      <ArrowLeft class="w-3.5 h-3.5" />
+      <span>All Articles</span>
+    </a>
+
+    {
+      series && (
+        <>
+          <ChevronRight class="w-3.5 h-3.5 text-neutral-400 dark:text-neutral-600" />
+          <a
+            href={`/series/${series.id}`}
+            class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors truncate max-w-xs"
+          >
+            {series.title || 'Learning Path'}
+          </a>
+        </>
+      )
+    }
+  </nav>
+
+  <!-- Post Header -->
+  <header class="mb-10 pb-8 border-b border-neutral-200 dark:border-neutral-800">
+    <div class="flex items-center gap-2 flex-wrap text-xs mb-3">
+      {
+        tags.map((tag) => (
+          <a
+            href={`/tags/${tag}`}
+            class="px-2.5 py-1 rounded-full bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-300 font-medium hover:bg-blue-100 hover:text-blue-700 dark:hover:bg-blue-900/40 dark:hover:text-blue-300 transition-colors"
+          >
+            #{tag}
+          </a>
+        ))
+      }
+    </div>
+
+    <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-neutral-900 dark:text-white leading-[1.15] mb-4">
+      {title}
+    </h1>
+
+    <p class="text-lg sm:text-xl text-neutral-600 dark:text-neutral-300 leading-relaxed max-w-3xl mb-6">
+      {description}
+    </p>
+
+    <!-- Meta Details -->
+    <div class="flex items-center gap-4 text-xs sm:text-sm text-neutral-500 dark:text-neutral-400 flex-wrap">
+      <div class="flex items-center gap-1.5">
+        <Calendar class="w-4 h-4" />
+        <FormattedDate date={pubDate} />
+      </div>
+
+      <span class="text-neutral-300 dark:text-neutral-700">•</span>
+
+      <div class="flex items-center gap-1.5">
+        <Clock class="w-4 h-4" />
+        <span>{readingTime} min read</span>
+      </div>
+
+      {
+        updatedDate && (
+          <>
+            <span class="text-neutral-300 dark:text-neutral-700">•</span>
+            <span class="italic">Updated <FormattedDate date={updatedDate} /></span>
+          </>
+        )
+      }
+    </div>
+  </header>
+
+  <!-- Content & TOC Grid -->
+  <div class="grid grid-cols-1 lg:grid-cols-[1fr_260px] gap-12 items-start">
+    <article class="min-w-0">
+      {/* If this post is part of a series, show the interactive series box */}
+      {series && <SeriesBanner seriesId={series.id} currentOrder={series.order} />}
+
+      {/* Main Prose Article */}
+      <div class="prose prose-neutral dark:prose-invert max-w-none prose-headings:scroll-mt-24 prose-headings:font-bold prose-h2:text-2xl prose-h3:text-xl prose-a:text-blue-600 dark:prose-a:text-blue-400 prose-a:no-underline hover:prose-a:underline prose-code:text-blue-600 dark:prose-code:text-blue-300 prose-code:before:content-none prose-code:after:content-none prose-code:bg-neutral-100 dark:prose-code:bg-neutral-800 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded-md prose-img:rounded-xl">
+        <slot />
+      </div>
+
+      {/* Series Next / Previous Navigation */}
+      {series && <SeriesNav seriesId={series.id} currentOrder={series.order} />}
+    </article>
+
+    <!-- Right Sidebar: Sticky Table of Contents -->
+    <TableOfContents headings={headings} />
+  </div>
+</BaseLayout>

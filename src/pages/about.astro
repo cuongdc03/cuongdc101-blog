@@ -1,0 +1,133 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { SITE_AUTHOR, SOCIAL_LINKS } from '../consts';
+import { Terminal, Target, Code } from '@lucide/astro';
+import GithubIcon from '../components/GithubIcon.astro';
+
+const learningGoals = [
+  {
+    topic: 'Distributed Systems & Consistency',
+    status: 'In Progress',
+    desc: 'Deep diving into consensus algorithms (Raft), partitioned databases, and event-driven architectures.',
+  },
+  {
+    topic: 'Cloud-Native & Production Kubernetes',
+    status: 'In Progress',
+    desc: 'Custom operators, eBPF network observability, and multi-tenant cluster management.',
+  },
+  {
+    topic: 'AI Systems Engineering',
+    status: 'Exploring',
+    desc: 'Autonomous coding agents, tool-augmented inference, and vector retrieval pipelines.',
+  },
+];
+
+const techStack = [
+  { category: 'Languages', items: ['TypeScript', 'Go', 'Python', 'SQL', 'Bash'] },
+  { category: 'Cloud & DevOps', items: ['Docker', 'Kubernetes', 'Linux', 'Terraform', 'GitHub Actions'] },
+  { category: 'Backend & Data', items: ['Node.js', 'PostgreSQL', 'Redis', 'Kafka', 'GraphQL'] },
+  { category: 'Frontend', items: ['Astro', 'React', 'Next.js', 'Tailwind CSS'] },
+];
+---
+
+<BaseLayout
+  title="About & Roadmap"
+  description={`About ${SITE_AUTHOR}, learning philosophy, active roadmaps, and tech stack.`}
+>
+  <div class="max-w-3xl mx-auto space-y-12">
+    <!-- Bio Section -->
+    <header class="space-y-4">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-blue-50 text-blue-700 dark:bg-blue-950/60 dark:text-blue-300 border border-blue-200 dark:border-blue-800">
+        <Terminal class="w-3.5 h-3.5" />
+        <span>About the Author</span>
+      </div>
+
+      <h1 class="text-3xl sm:text-5xl font-extrabold text-neutral-900 dark:text-white tracking-tight">
+        Hey, I'm {SITE_AUTHOR}.
+      </h1>
+
+      <p class="text-lg text-neutral-600 dark:text-neutral-300 leading-relaxed">
+        I am a software engineer passionate about building reliable, scalable systems and breaking down complex technical architectures into intuitive, hands-on mental models.
+      </p>
+
+      <p class="text-base text-neutral-600 dark:text-neutral-300 leading-relaxed">
+        This blog is my <strong>digital garden and public learning log</strong>. Whenever I explore a new technology, debug an intricate edge-case, or study a computer science fundamental, I distill it into structured chapters and articles here.
+      </p>
+
+      <div class="pt-2 flex items-center gap-3">
+        <a
+          href={SOCIAL_LINKS.github}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-neutral-900 hover:bg-neutral-800 text-white dark:bg-white dark:text-neutral-900 dark:hover:bg-neutral-200 text-xs font-semibold transition-colors"
+        >
+          <GithubIcon class="w-4 h-4" />
+          <span>Follow on GitHub</span>
+        </a>
+      </div>
+    </header>
+
+    <!-- Learning Roadmap Section -->
+    <section class="space-y-6 pt-8 border-t border-neutral-200 dark:border-neutral-800">
+      <div class="flex items-center gap-2">
+        <Target class="w-5 h-5 text-blue-600 dark:text-blue-400" />
+        <h2 class="text-xl font-bold text-neutral-900 dark:text-white">
+          Active Learning Roadmap
+        </h2>
+      </div>
+
+      <p class="text-sm text-neutral-600 dark:text-neutral-400">
+        Topics I am currently exploring, researching, and turning into upcoming series:
+      </p>
+
+      <div class="grid grid-cols-1 gap-4">
+        {
+          learningGoals.map((goal) => (
+            <div class="p-5 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900/40">
+              <div class="flex items-center justify-between gap-2 mb-2">
+                <h3 class="text-base font-bold text-neutral-900 dark:text-white">
+                  {goal.topic}
+                </h3>
+                <span class="px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-blue-50 text-blue-700 dark:bg-blue-950/80 dark:text-blue-300 border border-blue-200 dark:border-blue-800">
+                  {goal.status}
+                </span>
+              </div>
+              <p class="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed">
+                {goal.desc}
+              </p>
+            </div>
+          ))
+        }
+      </div>
+    </section>
+
+    <!-- Tech Stack Section -->
+    <section class="space-y-6 pt-8 border-t border-neutral-200 dark:border-neutral-800">
+      <div class="flex items-center gap-2">
+        <Code class="w-5 h-5 text-blue-600 dark:text-blue-400" />
+        <h2 class="text-xl font-bold text-neutral-900 dark:text-white">
+          Technical Toolkit
+        </h2>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        {
+          techStack.map((group) => (
+            <div class="p-5 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900/40">
+              <h3 class="text-xs font-bold uppercase tracking-wider text-neutral-400 dark:text-neutral-500 mb-3">
+                {group.category}
+              </h3>
+              <div class="flex flex-wrap gap-1.5">
+                {group.items.map((item) => (
+                  <span class="px-2.5 py-1 rounded-lg text-xs font-mono bg-neutral-100 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300">
+                    {item}
+                  </span>
+                ))}
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </section>
+  </div>
+</BaseLayout>
