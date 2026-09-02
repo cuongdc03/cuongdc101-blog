@@ -3,180 +3,171 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import PostCard from '../components/PostCard.astro';
 import { getCollection } from 'astro:content';
 import { SITE_TAGLINE } from '../consts';
-import { Layers, BookOpen, ArrowRight, Sparkles, Compass } from '@lucide/astro';
+import { ArrowRight, Tag } from '@lucide/astro';
 
-// Fetch published posts and series
+// Fetch published posts
 const allPosts = await getCollection('blog', ({ data }) => !data.draft);
 allPosts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
-
-const recentPosts = allPosts.slice(0, 4);
-
-const allSeries = await getCollection('series');
-allSeries.sort((a, b) => a.data.order - b.data.order);
-
-// Calculate post count per series
-const seriesStats = allSeries.map((s) => {
-  const chapters = allPosts.filter((p) => p.data.series?.id === s.id);
-  return {
-    ...s,
-    chapterCount: chapters.length,
-  };
-});
 
 // Extract all unique tags
 const allTags = Array.from(new Set(allPosts.flatMap((post) => post.data.tags)));
 ---
 
-<BaseLayout title="Home" description={SITE_TAGLINE}>
-  <!-- Hero Section -->
-  <section class="py-8 sm:py-16 max-w-3xl">
-    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-blue-50 text-blue-700 dark:bg-blue-950/60 dark:text-blue-300 border border-blue-200 dark:border-blue-800/80 mb-6">
-      <Sparkles class="w-3.5 h-3.5" />
-      <span>Continuous Learning & Engineering Logs</span>
-    </div>
+<BaseLayout title="Portfolio & Engineering Notes" description={SITE_TAGLINE}>
+  <!-- Hero Section: Manga Opening Spread -->
+  <section class="py-6 sm:py-10">
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
+      <!-- Left: Character Bio & Specs -->
+      <div class="md:col-span-7 space-y-4">
+        <!-- Manga Speech Bubble -->
+        <div class="inline-block">
+          <div class="manga-bubble px-4 py-2 font-mono text-xs font-bold text-neutral-900 dark:text-neutral-100">
+            「 Welcome to my public notebook! 」
+          </div>
+        </div>
 
-    <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-neutral-900 dark:text-white leading-[1.1] mb-6">
-      Documenting ideas, system deep dives, and learning paths.
-    </h1>
+        <h1 class="font-manga text-4xl sm:text-5xl font-black tracking-tight leading-tight text-neutral-900 dark:text-white">
+          Cao-Cuong Do
+        </h1>
 
-    <p class="text-lg sm:text-xl text-neutral-600 dark:text-neutral-300 leading-relaxed mb-8">
-      Hi, I'm <strong class="text-neutral-900 dark:text-white font-semibold">Cuong</strong>. This digital space serves as my second brain: a structured collection of multi-part learning roadmaps, real-world troubleshooting notes, and architecture breakdowns.
-    </p>
-
-    <!-- Call to Actions -->
-    <div class="flex items-center gap-3 flex-wrap">
-      <a
-        href="/series"
-        class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm shadow-md shadow-blue-500/20 transition-all hover:scale-[1.02]"
-      >
-        <Layers class="w-4 h-4" />
-        <span>Explore Learning Tracks</span>
-      </a>
-
-      <a
-        href="/blog"
-        class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 hover:bg-neutral-100 dark:hover:bg-neutral-800 text-neutral-800 dark:text-neutral-200 font-medium text-sm transition-all"
-      >
-        <BookOpen class="w-4 h-4" />
-        <span>Browse All Posts</span>
-      </a>
-    </div>
-  </section>
-
-  <!-- Featured Learning Tracks Section -->
-  <section class="my-12 pt-8 border-t border-neutral-200 dark:border-neutral-800">
-    <div class="flex items-center justify-between gap-4 mb-8">
-      <div>
-        <h2 class="text-2xl font-bold text-neutral-900 dark:text-white flex items-center gap-2.5">
-          <Compass class="w-6 h-6 text-blue-600 dark:text-blue-400" />
-          <span>Curated Learning Tracks</span>
-        </h2>
-        <p class="text-sm text-neutral-500 dark:text-neutral-400 mt-1">
-          Structured, multi-part series designed to be read sequentially.
+        <p class="text-sm sm:text-base text-neutral-700 dark:text-neutral-300 leading-relaxed font-normal">
+          Full-stack engineer crafting resilient distributed systems and dissecting Linux container internals. Documenting real-world production lessons one chapter at a time.
         </p>
-      </div>
 
-      <a
-        href="/series"
-        class="text-xs sm:text-sm font-semibold text-blue-600 dark:text-blue-400 hover:underline flex items-center gap-1"
-      >
-        <span>View all tracks</span>
-        <ArrowRight class="w-4 h-4" />
-      </a>
-    </div>
+        <!-- Manga Spec Box -->
+        <div class="border border-neutral-900 dark:border-neutral-100 p-3.5 bg-white dark:bg-neutral-900 space-y-2 text-xs font-mono max-w-lg">
+          <div class="flex justify-between border-b border-neutral-200 dark:border-neutral-800 pb-1.5">
+            <span class="text-neutral-500 dark:text-neutral-400">CLASS:</span>
+            <span class="font-bold text-neutral-900 dark:text-neutral-100">SYSTEMS BUILDER</span>
+          </div>
+          <div class="flex justify-between border-b border-neutral-200 dark:border-neutral-800 pb-1.5">
+            <span class="text-neutral-500 dark:text-neutral-400">BASE CAMP:</span>
+            <span class="font-bold text-neutral-900 dark:text-neutral-100">SAIGON (UTC+7)</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-neutral-500 dark:text-neutral-400">CURRENT QUEST:</span>
+            <span class="font-bold text-neutral-900 dark:text-neutral-100">CONSENSUS & CONTAINERS</span>
+          </div>
+        </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-      {
-        seriesStats.map((s) => (
-          <a
-            href={`/series/${s.id}`}
-            class="group p-6 rounded-2xl border border-neutral-200/80 dark:border-neutral-800/80 bg-white dark:bg-neutral-900/40 hover:border-blue-500/60 dark:hover:border-blue-500/60 hover:shadow-xl hover:shadow-blue-500/5 transition-all flex flex-col justify-between"
-          >
-            <div>
-              <div class="flex items-center justify-between gap-2 mb-4">
-                <span class="inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-semibold bg-neutral-100 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300">
-                  {s.data.level}
-                </span>
-
-                <span class="text-xs text-neutral-500 dark:text-neutral-400 font-mono">
-                  {s.chapterCount} {s.chapterCount === 1 ? 'Chapter' : 'Chapters'}
-                </span>
-              </div>
-
-              <h3 class="text-lg font-bold text-neutral-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors mb-2">
-                {s.data.title}
-              </h3>
-
-              <p class="text-sm text-neutral-600 dark:text-neutral-400 line-clamp-2 leading-relaxed mb-4">
-                {s.data.description}
-              </p>
-            </div>
-
-            <div class="pt-4 border-t border-neutral-100 dark:border-neutral-800/60 flex items-center justify-between text-xs font-medium text-blue-600 dark:text-blue-400">
-              <span>Start Track</span>
-              <ArrowRight class="w-4 h-4 transition-transform group-hover:translate-x-1" />
-            </div>
+        <!-- Manga Action Buttons -->
+        <div class="pt-2 flex items-center gap-3 flex-wrap">
+          <a href="/blog" class="manga-btn px-4 py-2 text-xs font-mono font-bold gap-2">
+            <span>READ NOTEBOOK ↓</span>
           </a>
-        ))
-      }
+
+          <a href="/about" class="manga-btn-secondary px-4 py-2 text-xs font-mono font-bold">
+            CHARACTER DOSSIER
+          </a>
+
+          <a
+            href="https://github.com/cuongdc101"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="manga-btn-secondary px-3.5 py-2 text-xs font-mono font-bold"
+          >
+            GITHUB ↗
+          </a>
+        </div>
+      </div>
+
+      <!-- Right: Manga Ink Photo Panel with Screentone -->
+      <div class="md:col-span-5">
+        <div class="relative manga-panel p-3.5 bg-white dark:bg-[#18181c] max-w-sm mx-auto">
+          <div class="absolute inset-0 screentone pointer-events-none"></div>
+          <div class="relative aspect-square overflow-hidden border border-neutral-900 dark:border-neutral-100 bg-neutral-100 dark:bg-neutral-800">
+            <img
+              src="/images/cuong.jpg"
+              alt="Cao-Cuong Do"
+              class="w-full h-full object-cover grayscale contrast-125 hover:grayscale-0 transition-all duration-300"
+            />
+            <div class="absolute bottom-2 left-2 right-2 px-2.5 py-1 bg-neutral-900/90 dark:bg-neutral-100/90 text-[#fcfbf7] dark:text-neutral-900 text-[10px] font-mono flex items-center justify-between">
+              <span class="flex items-center gap-1.5">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+                <span>STATUS: ACTIVE</span>
+              </span>
+              <span>SAIGON</span>
+            </div>
+          </div>
+          <div class="mt-3 flex items-center justify-between text-[11px] font-mono font-bold text-neutral-600 dark:text-neutral-400">
+            <span>FIGURE 1.0 — AUTHOR</span>
+            <span>SAIGON WORKSPACE</span>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 
-  <!-- Recent Articles Section -->
-  <section class="my-16 pt-8 border-t border-neutral-200 dark:border-neutral-800">
-    <div class="flex items-center justify-between gap-4 mb-8">
-      <div>
-        <h2 class="text-2xl font-bold text-neutral-900 dark:text-white flex items-center gap-2.5">
-          <BookOpen class="w-6 h-6 text-blue-600 dark:text-blue-400" />
-          <span>Recent Articles & Notes</span>
-        </h2>
-        <p class="text-sm text-neutral-500 dark:text-neutral-400 mt-1">
-          Latest writeups, tutorials, and practical engineering guides.
-        </p>
+  <!-- Section Divider with Centered Stamp -->
+  <div class="relative py-8 flex items-center justify-center">
+    <div class="absolute inset-0 flex items-center">
+      <div class="w-full border-t border-neutral-900 dark:border-neutral-100"></div>
+    </div>
+    <span class="relative bg-[#fcfbf7] dark:bg-[#111113] px-4 font-mono text-xs font-bold tracking-widest uppercase text-neutral-900 dark:text-white">
+      RECENT DISPATCHES
+    </span>
+  </div>
+
+  <!-- Recent Articles Grid: Manga Panels -->
+  <section class="space-y-6">
+    <div class="flex items-center justify-between gap-4">
+      <div class="flex items-center gap-2 font-mono text-xs text-neutral-500 dark:text-neutral-400">
+        <span class="manga-stamp">LOG ARCHIVE</span>
+        <span>{allPosts.length} ARTICLES RECORDED</span>
       </div>
 
       <a
         href="/blog"
-        class="text-xs sm:text-sm font-semibold text-blue-600 dark:text-blue-400 hover:underline flex items-center gap-1"
+        class="manga-btn-secondary px-3 py-1 text-xs gap-1.5"
       >
-        <span>View all ({allPosts.length})</span>
-        <ArrowRight class="w-4 h-4" />
+        <span>ALL NOTES ({allPosts.length})</span>
+        <ArrowRight class="w-3.5 h-3.5" />
       </a>
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
       {
-        recentPosts.map((post) => (
+        allPosts.map((post) => (
           <PostCard
             id={post.id}
             title={post.data.title}
             description={post.data.description}
             pubDate={post.data.pubDate}
             tags={post.data.tags}
-            series={post.data.series}
             body={post.body}
+            heroImage={post.data.heroImage}
           />
         ))
       }
     </div>
   </section>
 
-  <!-- Topic Cloud Section -->
+  <!-- Topic Stickers Section -->
   {
     allTags.length > 0 && (
-      <section class="my-16 p-8 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-neutral-50/50 dark:bg-neutral-900/30">
-        <h3 class="text-sm font-bold uppercase tracking-wider text-neutral-500 dark:text-neutral-400 mb-4">
-          Browse by Topic
-        </h3>
+      <section class="my-16 manga-panel p-6 sm:p-8 bg-white dark:bg-[#18181c]">
+        <div class="flex items-center justify-between gap-4 mb-4">
+          <h3 class="text-xs font-mono font-bold uppercase tracking-wider text-neutral-500 dark:text-neutral-400 flex items-center gap-1.5">
+            <Tag class="w-3.5 h-3.5" />
+            <span>TOPIC INDEX ({allTags.length})</span>
+          </h3>
+          <a href="/tags" class="text-xs font-mono font-bold text-neutral-900 dark:text-white hover:underline">
+            ALL TOPICS →
+          </a>
+        </div>
         <div class="flex items-center gap-2 flex-wrap">
-          {allTags.map((tag) => (
-            <a
-              href={`/tags/${tag}`}
-              class="px-3 py-1.5 rounded-lg text-xs font-medium bg-white dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 text-neutral-700 dark:text-neutral-200 hover:border-blue-500 hover:text-blue-600 dark:hover:text-blue-400 transition-colors shadow-sm"
-            >
-              #{tag}
-            </a>
-          ))}
+          {allTags.map((tag) => {
+            const count = allPosts.filter((p) => p.data.tags.includes(tag)).length;
+            return (
+              <a
+                href={`/tags/${tag}`}
+                class="manga-stamp-outline px-2.5 py-1 text-xs font-mono font-bold hover:bg-neutral-900 hover:text-white dark:hover:bg-neutral-100 dark:hover:text-neutral-900 transition-colors"
+              >
+                <span>#{tag}</span>
+                <span class="text-[10px] opacity-70 ml-1">({count})</span>
+              </a>
+            );
+          })}
         </div>
       </section>
     )

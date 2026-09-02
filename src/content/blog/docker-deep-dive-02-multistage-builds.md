@@ -2,15 +2,12 @@
 title: "Production Dockerfiles: Multi-Stage Magic & Security Best Practices"
 description: "How to shrink container images from 1.2GB down to 35MB, implement non-root users, and leverage cache mounts for 10x faster CI builds."
 pubDate: "2026-09-03"
+heroImage: "/images/docker-containers.jpg"
 tags: ["docker", "devops", "security", "containers"]
-series:
-  id: "docker-containers"
-  order: 2
-  title: "Docker & Containerization Deep Dive"
 draft: false
 ---
 
-In Chapter 1, we explored how containers isolate processes using Linux namespaces and cgroups. Now let's turn our attention to building lean, secure, and lightning-fast images for production.
+In our previous post, we explored how containers isolate processes using Linux namespaces and cgroups. Now let's turn our attention to building lean, secure, and lightning-fast images for production.
 
 A bloated image doesn't just waste disk space:
 - **Deployment latency**: Pushing and pulling 1.5GB across nodes takes precious minutes during auto-scaling.

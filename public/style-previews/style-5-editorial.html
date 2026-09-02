@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Style 5: Editorial Graphic Essay & Sunday Strip</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,800;0,900;1,600&family=Lora:ital,wght@0,400;0,500;1,400&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Lora', Georgia, serif;
+      background-color: #fbf8f1;
+      color: #1a1918;
+    }
+    .font-headline { font-family: 'Playfair Display', serif; }
+    .font-typewriter { font-family: 'Courier Prime', monospace; }
+
+    /* Editorial Graphic Strip Panel */
+    .strip-panel {
+      background: #ffffff;
+      border: 1.5px solid #1a1918;
+      box-shadow: 3px 3px 0px 0px #1a1918;
+      transition: all 0.2s ease;
+    }
+    .strip-panel:hover {
+      box-shadow: 5px 5px 0px 0px #1a1918;
+      transform: translate(-1px, -1px);
+    }
+
+    /* Narrative Caption Box (classic Sunday comic narration) */
+    .narrative-box {
+      background: #fbf8f1;
+      border: 1.5px solid #1a1918;
+      font-family: 'Courier Prime', monospace;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 10px;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      display: inline-block;
+    }
+
+    /* Editorial Speech Bubble */
+    .editorial-bubble {
+      position: relative;
+      background: #ffffff;
+      border: 1.5px solid #1a1918;
+      border-radius: 12px;
+      padding: 8px 16px;
+      font-style: italic;
+    }
+    .editorial-bubble::after {
+      content: '';
+      position: absolute;
+      bottom: -8px;
+      left: 20px;
+      width: 12px;
+      height: 12px;
+      background: #ffffff;
+      border-right: 1.5px solid #1a1918;
+      border-bottom: 1.5px solid #1a1918;
+      transform: rotate(45deg);
+    }
+  </style>
+</head>
+<body class="min-h-screen py-10 px-4 sm:px-8">
+  <div class="max-w-4xl mx-auto space-y-12">
+
+    <!-- Editorial Masthead (New Yorker / Graphic Journal style) -->
+    <header class="border-b-2 border-[#1a1918] pb-6 text-center space-y-2">
+      <div class="flex items-center justify-between text-xs font-typewriter border-b border-neutral-300 pb-2">
+        <span>VOL. I — NO. 4</span>
+        <span class="tracking-widest">CAO-CUONG DO'S DISPATCHES</span>
+        <span>SAÏGON, 2026</span>
+      </div>
+      <h1 class="font-headline text-4xl sm:text-6xl font-black tracking-tight text-[#1a1918]">
+        The Engineering Chronicle
+      </h1>
+      <p class="text-xs sm:text-sm text-neutral-600 font-typewriter">
+        A graphic journal on software architecture, container internals, & lessons from production.
+      </p>
+    </header>
+
+    <!-- Panel 1: The Persona & Origin (Sunday Strip Layout) -->
+    <section class="strip-panel p-6 sm:p-8">
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
+        <!-- Photo with Narrative Frame -->
+        <div class="md:col-span-4 order-2 md:order-1">
+          <div class="relative p-2 bg-[#fbf8f1] border border-[#1a1918]">
+            <div class="aspect-square overflow-hidden border border-[#1a1918]">
+              <img 
+                src="/images/cuong.jpg" 
+                alt="Cao-Cuong Do"
+                class="w-full h-full object-cover grayscale contrast-115"
+              />
+            </div>
+            <div class="mt-2 text-center text-[10px] font-typewriter text-neutral-600">
+              PLATE I. — THE AUTHOR AT WORK
+            </div>
+          </div>
+        </div>
+
+        <!-- Narrative Content -->
+        <div class="md:col-span-8 order-1 md:order-2 space-y-4">
+          <span class="narrative-box">PROLOGUE // THE ENGINEER</span>
+          
+          <div class="inline-block">
+            <div class="editorial-bubble text-xs text-neutral-800">
+              "To truly understand a machine, one must first take it apart."
+            </div>
+          </div>
+
+          <h2 class="font-headline text-2xl sm:text-3xl font-bold leading-snug">
+            Notes from beneath the abstractions.
+          </h2>
+
+          <p class="text-sm sm:text-base text-neutral-700 leading-relaxed font-normal">
+            I am Cao-Cuong, a software developer in Saigon. Rather than treating computers like black boxes, this publication chronicles my hands-on experiments dissecting Linux containers, database consistency, and resilient system architecture.
+          </p>
+
+          <div class="flex items-center gap-4 pt-2 font-typewriter text-xs">
+            <a href="#dispatches" class="px-4 py-2 bg-[#1a1918] text-[#fbf8f1] font-bold hover:bg-neutral-800 transition-colors">
+              READ ARTICLES ↓
+            </a>
+            <a href="https://github.com/cuongdc03" target="_blank" class="hover:underline font-bold">
+              GITHUB ARCHIVE ↗
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Strip Divider -->
+    <div class="flex items-center gap-4 py-2">
+      <div class="flex-1 border-t-2 border-[#1a1918]"></div>
+      <span class="font-typewriter text-xs font-bold tracking-widest uppercase">
+        PANEL II: RECENT FIELD ESSAYS
+      </span>
+      <div class="flex-1 border-t-2 border-[#1a1918]"></div>
+    </div>
+
+    <!-- Editorial Essay Cards -->
+    <section id="dispatches" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <!-- Essay 1 -->
+      <article class="strip-panel p-6 flex flex-col justify-between">
+        <div>
+          <div class="aspect-[16/9] w-full mb-4 overflow-hidden border border-[#1a1918] bg-[#fbf8f1]">
+            <img 
+              src="/images/docker-containers.jpg" 
+              alt="Docker Containers" 
+              class="w-full h-full object-cover grayscale contrast-115"
+            />
+          </div>
+          <div class="flex items-center justify-between text-xs font-typewriter text-neutral-500 mb-2">
+            <span class="narrative-box !text-[9px] !py-0 !px-1.5">ESSAY NO. 1</span>
+            <span>SEPTEMBER 2026</span>
+          </div>
+          <h3 class="font-headline text-xl font-bold leading-snug hover:underline cursor-pointer">
+            Containers Under the Hood: Linux Namespaces & cgroups
+          </h3>
+          <p class="text-xs sm:text-sm text-neutral-600 mt-2 leading-relaxed">
+            An investigation into kernel isolation: how UTS, PID, and memory boundaries create the illusion of a standalone computer.
+          </p>
+        </div>
+        <div class="mt-6 pt-3 border-t border-neutral-200 flex items-center justify-between text-xs font-typewriter font-bold">
+          <span>READ TIME: 5 MIN</span>
+          <span class="hover:underline">OPEN DISPATCH ➔</span>
+        </div>
+      </article>
+
+      <!-- Essay 2 -->
+      <article class="strip-panel p-6 flex flex-col justify-between">
+        <div>
+          <div class="aspect-[16/9] w-full mb-4 overflow-hidden border border-[#1a1918] bg-[#fbf8f1]">
+            <img 
+              src="/images/distributed-caching.jpg" 
+              alt="Distributed Caching" 
+              class="w-full h-full object-cover grayscale contrast-115"
+            />
+          </div>
+          <div class="flex items-center justify-between text-xs font-typewriter text-neutral-500 mb-2">
+            <span class="narrative-box !text-[9px] !py-0 !px-1.5">ESSAY NO. 2</span>
+            <span>SEPTEMBER 2026</span>
+          </div>
+          <h3 class="font-headline text-xl font-bold leading-snug hover:underline cursor-pointer">
+            Distributed Caching Patterns: Cache-Aside vs Write-Through
+          </h3>
+          <p class="text-xs sm:text-sm text-neutral-600 mt-2 leading-relaxed">
+            Mitigating the thundering herd, analyzing invalidation pitfalls, and designing resilient Redis cluster topologies.
+          </p>
+        </div>
+        <div class="mt-6 pt-3 border-t border-neutral-200 flex items-center justify-between text-xs font-typewriter font-bold">
+          <span>READ TIME: 6 MIN</span>
+          <span class="hover:underline">OPEN DISPATCH ➔</span>
+        </div>
+      </article>
+    </section>
+
+    <!-- Colophon -->
+    <footer class="pt-8 border-t-2 border-[#1a1918] text-center font-typewriter text-xs text-neutral-600 space-y-2">
+      <div>STYLE 5 // EDITORIAL GRAPHIC ESSAY & SUNDAY STRIP</div>
+      <div class="text-neutral-400">PRINTED & PUBLISHED IN SAÏGON • ALL RIGHTS RESERVED</div>
+    </footer>
+
+  </div>
+</body>
+</html>

@@ -2,6 +2,7 @@
 title: "Welcome to My Learning Journey: Why I Learn in Public"
 description: "Why I decided to document every step of my software engineering path, the power of digital gardens, and what to expect from this site."
 pubDate: "2026-09-01"
+heroImage: "/images/welcome-learning-journey.jpg"
 tags: ["meta", "career", "productivity"]
 draft: false
 ---
@@ -20,14 +21,14 @@ When you write notes solely for yourself, it is easy to gloss over edge cases or
 
 1. **Active synthesis**: You are forced to connect the dots and eliminate fuzzy assumptions.
 2. **Searchable second brain**: Instead of re-Googling the same tricky bug or architecture pattern six months later, you have your own vetted reference.
-3. **Structured Roadmaps**: Rather than learning haphazardly, organizing my learnings into **Learning Paths & Series** keeps me accountable to master topics end-to-end.
+3. **Structured Thinking**: Writing down my thought processes keeps me accountable to master topics thoroughly.
 
 ## What You'll Find Here
 
-On this blog, you will see content organized in two distinct ways:
+On this blog, you will see practical engineering writeups:
 
-- **Standalone Articles & TILs**: Focused deep dives into specific issues, developer productivity, or practical engineering experiments.
-- **Curated Learning Paths**: Multi-part series designed to be read sequentially. For instance, my deep dives into container internals, distributed systems, and performance tuning.
+- **Deep Dives & TILs**: Focused technical breakdowns into container internals, distributed architectures, database tuning, and developer tooling.
+- **Hands-On Experiments**: Real-world benchmarks, configuration patterns, and code experiments.
 
 ```ts
 // The learning loop
@@ -39,4 +40,4 @@ interface LearningJourney {
 }
 ```
 
-Stay tuned, explore the [Learning Paths](/series), and feel free to connect!
+Stay tuned, explore the [Blog Notes](/blog), and feel free to connect!

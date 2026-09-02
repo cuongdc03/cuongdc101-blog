@@ -2,11 +2,8 @@
 title: "Containers Under the Hood: Linux Namespaces & cgroups"
 description: "Demystifying what a container actually is by dissecting Linux kernel primitives: UTS, PID, NET, MNT namespaces, and control groups."
 pubDate: "2026-09-02"
+heroImage: "/images/docker-containers.jpg"
 tags: ["docker", "linux", "devops", "containers"]
-series:
-  id: "docker-containers"
-  order: 1
-  title: "Docker & Containerization Deep Dive"
 draft: false
 ---
 

@@ -1,8 +1,8 @@
 ---
 import { NAV_ITEMS, SOCIAL_LINKS } from '../consts';
 import ThemeToggle from './ThemeToggle.astro';
-import { Search, Terminal, Menu, X } from '@lucide/astro';
 import GithubIcon from './GithubIcon.astro';
+import { Search, Menu, X } from '@lucide/astro';
 
 const pathname = Astro.url.pathname;
 const isCurrent = (href: string) => {
@@ -11,38 +11,36 @@ const isCurrent = (href: string) => {
 };
 ---
 
-<header class="sticky top-0 z-40 w-full border-b border-neutral-200/80 dark:border-neutral-800/80 bg-white/80 dark:bg-neutral-900/80 backdrop-blur-md transition-colors">
+<header class="sticky top-0 z-40 w-full border-b-[1.5px] border-neutral-900 dark:border-neutral-100 bg-[#fcfbf7]/95 dark:bg-[#111113]/95 backdrop-blur-md transition-colors">
   <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
-    <!-- Brand Logo -->
-    <a href="/" class="flex items-center gap-2.5 group shrink-0">
-      <div class="w-8 h-8 rounded-lg bg-blue-600 dark:bg-blue-500 text-white flex items-center justify-center font-bold shadow-sm shadow-blue-500/20 group-hover:scale-105 transition-transform">
-        <Terminal class="w-4 h-4" />
-      </div>
-      <div class="flex flex-col">
-        <span class="font-bold text-base tracking-tight text-neutral-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
-          cuongdc101
+    <!-- Brand Logo / Manga Masthead -->
+    <a href="/" class="flex items-center gap-3 group shrink-0" aria-label="Home">
+      <span class="manga-stamp">VOL. 01</span>
+      <div class="flex items-baseline gap-2">
+        <span class="font-manga font-black text-xl tracking-tighter text-neutral-900 dark:text-white">
+          CUONG.LOG
         </span>
-        <span class="text-[10px] text-neutral-400 dark:text-neutral-500 -mt-1 font-mono">
-          dev & learning notes
+        <span class="text-[11px] text-neutral-500 dark:text-neutral-400 font-mono hidden sm:inline">
+          // DEV PORTFOLIO
         </span>
       </div>
     </a>
 
     <!-- Desktop Nav Links -->
-    <nav class="hidden md:flex items-center gap-1 text-sm font-medium">
+    <nav class="hidden md:flex items-center gap-2 text-xs font-mono font-bold">
       {
         NAV_ITEMS.map((item) => {
           const active = isCurrent(item.href);
           return (
             <a
               href={item.href}
-              class={`px-3 py-1.5 rounded-lg transition-colors ${
+              class={`px-3 py-1.5 transition-all ${
                 active
-                  ? 'text-blue-600 dark:text-blue-400 bg-blue-50/80 dark:bg-blue-950/40 font-semibold'
-                  : 'text-neutral-600 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-100 hover:bg-neutral-100/80 dark:hover:bg-neutral-800/50'
+                  ? 'bg-neutral-900 text-white dark:bg-neutral-100 dark:text-neutral-900 border border-neutral-900 dark:border-neutral-100'
+                  : 'text-neutral-600 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-100 hover:bg-neutral-200/50 dark:hover:bg-neutral-800/50'
               }`}
             >
-              {item.text}
+              {item.text.toUpperCase()}
             </a>
           );
         })
@@ -56,11 +54,11 @@ const isCurrent = (href: string) => {
         type="button"
         data-search-trigger
         aria-label="Search posts and topics"
-        class="flex items-center gap-2 px-2.5 py-1.5 rounded-lg border border-neutral-200 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-800/60 hover:bg-neutral-100 dark:hover:bg-neutral-800 text-neutral-500 dark:text-neutral-400 text-xs transition-colors"
+        class="manga-btn-secondary px-3 py-1.5 text-xs gap-2"
       >
-        <Search class="w-4 h-4" />
-        <span class="hidden sm:inline">Search</span>
-        <kbd class="hidden sm:inline-block px-1.5 py-0.5 rounded bg-neutral-200 dark:bg-neutral-700 font-mono text-[10px]">⌘K</kbd>
+        <Search class="w-3.5 h-3.5" />
+        <span class="hidden sm:inline font-mono font-bold">SEARCH</span>
+        <kbd class="hidden sm:inline-block px-1.5 py-0.5 border border-neutral-300 dark:border-neutral-700 font-mono text-[10px]">⌘K</kbd>
       </button>
 
       <!-- GitHub Link -->
@@ -69,9 +67,9 @@ const isCurrent = (href: string) => {
         target="_blank"
         rel="noopener noreferrer"
         aria-label="GitHub Profile"
-        class="p-2 rounded-lg text-neutral-600 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-100 hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors"
+        class="manga-btn-secondary p-1.5 text-neutral-900 dark:text-neutral-100"
       >
-        <GithubIcon class="w-5 h-5" />
+        <GithubIcon class="w-4 h-4" />
       </a>
 
       <!-- Theme Switcher -->
@@ -81,8 +79,9 @@ const isCurrent = (href: string) => {
       <button
         id="mobile-menu-btn"
         type="button"
-        class="md:hidden p-2 rounded-lg text-neutral-600 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-100 hover:bg-neutral-100 dark:hover:bg-neutral-800 focus:outline-none"
+        class="manga-btn-secondary md:hidden p-1.5 text-neutral-900 dark:text-neutral-100"
         aria-label="Open menu"
+        aria-expanded="false"
       >
         <Menu id="menu-icon-open" class="w-5 h-5" />
         <X id="menu-icon-close" class="w-5 h-5 hidden" />
@@ -91,20 +90,20 @@ const isCurrent = (href: string) => {
   </div>
 
   <!-- Mobile Dropdown Nav -->
-  <div id="mobile-menu" class="hidden md:hidden border-b border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 px-4 py-3 space-y-1">
+  <div id="mobile-menu" class="hidden md:hidden border-b-[1.5px] border-neutral-900 dark:border-neutral-100 bg-[#fcfbf7] dark:bg-[#111113] px-4 py-4 space-y-2">
     {
       NAV_ITEMS.map((item) => {
         const active = isCurrent(item.href);
         return (
           <a
             href={item.href}
-            class={`block px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+            class={`block px-4 py-2 text-xs font-mono font-bold transition-all ${
               active
-                ? 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-950/40 font-semibold'
-                : 'text-neutral-600 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-white hover:bg-neutral-100 dark:hover:bg-neutral-800'
+                ? 'bg-neutral-900 text-white dark:bg-neutral-100 dark:text-neutral-900 border border-neutral-900 dark:border-neutral-100'
+                : 'text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800'
             }`}
           >
-            {item.text}
+            {item.text.toUpperCase()}
           </a>
         );
       })
@@ -119,18 +118,16 @@ const isCurrent = (href: string) => {
     const iconOpen = document.getElementById('menu-icon-open');
     const iconClose = document.getElementById('menu-icon-close');
 
-    if (!btn || !menu || !iconOpen || !iconClose) return;
+    if (!btn || !menu) return;
 
     btn.addEventListener('click', () => {
-      const isExpanded = !menu.classList.contains('hidden');
-      if (isExpanded) {
-        menu.classList.add('hidden');
-        iconOpen.classList.remove('hidden');
-        iconClose.classList.add('hidden');
-      } else {
-        menu.classList.remove('hidden');
-        iconOpen.classList.add('hidden');
-        iconClose.classList.remove('reverse', 'hidden');
+      const isExpanded = btn.getAttribute('aria-expanded') === 'true';
+      btn.setAttribute('aria-expanded', String(!isExpanded));
+      menu.classList.toggle('hidden');
+
+      if (iconOpen && iconClose) {
+        iconOpen.classList.toggle('hidden');
+        iconClose.classList.toggle('hidden');
       }
     });
   }

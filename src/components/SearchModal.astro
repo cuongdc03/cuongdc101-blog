@@ -8,49 +8,80 @@ import { Search, X } from '@lucide/astro';
   role="dialog"
   aria-modal="true"
 >
-  <div class="min-h-screen px-4 text-center flex items-start justify-center pt-20 sm:pt-28">
+  <div class="min-h-screen px-4 text-center flex items-start justify-center pt-16 sm:pt-24">
     <div
       id="search-dialog"
-      class="w-full max-w-2xl transform overflow-hidden rounded-2xl bg-white dark:bg-neutral-900 text-left align-middle shadow-2xl border border-neutral-200 dark:border-neutral-800 transition-all"
+      class="w-full max-w-2xl transform overflow-hidden bg-[#fcfbf7] dark:bg-[#111113] text-left align-middle border-[1.5px] border-neutral-900 dark:border-neutral-100 shadow-[6px_6px_0px_0px_#111111] dark:shadow-[6px_6px_0px_0px_#fcfbf7] transition-all"
     >
       <!-- Search Input Area -->
-      <div class="relative flex items-center border-b border-neutral-200 dark:border-neutral-800 px-4">
-        <Search class="w-5 h-5 text-neutral-400 dark:text-neutral-500 mr-3 shrink-0" />
+      <div class="relative flex items-center border-b-[1.5px] border-neutral-900 dark:border-neutral-100 px-4">
+        <Search class="w-5 h-5 text-neutral-700 dark:text-neutral-300 mr-3 shrink-0" />
         <input
           id="search-input"
           type="text"
-          placeholder="Search articles, learning tracks, concepts..."
-          class="w-full py-4 text-base bg-transparent text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-500 focus:outline-none"
+          placeholder="SEARCH ARTICLES, TOPICS, CONCEPTS..."
+          class="w-full py-3.5 text-sm bg-transparent text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-500 font-mono focus:outline-none"
           autocomplete="off"
         />
         <button
+          id="clear-search"
+          type="button"
+          class="hidden px-2 py-0.5 mr-1 border border-neutral-900 dark:border-neutral-100 text-neutral-900 dark:text-neutral-100 text-xs font-mono font-bold cursor-pointer"
+          aria-label="Clear search query"
+        >
+          CLEAR
+        </button>
+        <button
           id="close-search"
           type="button"
-          class="p-1 rounded-md text-neutral-400 hover:text-neutral-600 dark:hover:text-neutral-200"
+          class="p-1.5 text-neutral-700 hover:text-neutral-900 dark:text-neutral-300 dark:hover:text-white cursor-pointer"
           aria-label="Close search"
         >
           <X class="w-5 h-5" />
         </button>
       </div>
 
+      <!-- Quick Topic Chips -->
+      <div class="flex items-center gap-1.5 px-4 py-2.5 border-b-[1.5px] border-neutral-900 dark:border-neutral-100 overflow-x-auto text-xs bg-white dark:bg-[#18181c] font-mono">
+        <span class="text-neutral-500 dark:text-neutral-400 font-bold text-[10px] uppercase mr-1 shrink-0">INDEX:</span>
+        <button type="button" data-filter="" class="quick-chip manga-stamp cursor-pointer shrink-0">
+          ALL
+        </button>
+        <button type="button" data-filter="Docker" class="quick-chip manga-stamp-outline cursor-pointer shrink-0">
+          #DOCKER
+        </button>
+        <button type="button" data-filter="System Design" class="quick-chip manga-stamp-outline cursor-pointer shrink-0">
+          #SYSTEM-DESIGN
+        </button>
+        <button type="button" data-filter="Linux" class="quick-chip manga-stamp-outline cursor-pointer shrink-0">
+          #LINUX
+        </button>
+        <button type="button" data-filter="DevOps" class="quick-chip manga-stamp-outline cursor-pointer shrink-0">
+          #DEVOPS
+        </button>
+        <button type="button" data-filter="Caching" class="quick-chip px-2.5 py-1 rounded-lg font-medium bg-neutral-100 dark:bg-neutral-800 text-neutral-800 dark:text-neutral-200 border border-neutral-300 dark:border-neutral-700 hover:bg-neutral-200 dark:hover:bg-neutral-700 cursor-pointer shrink-0 transition-colors">
+          Caching
+        </button>
+      </div>
+
       <!-- Results Container -->
-      <div id="search-results" class="max-h-96 overflow-y-auto p-4 space-y-2">
+      <div id="search-results" class="max-h-96 overflow-y-auto p-3 space-y-1.5">
         <p class="text-sm text-neutral-500 dark:text-neutral-400 text-center py-6">
-          Type keywords or tags to find articles and learning paths...
+          Type keywords or click a topic to find articles and learning paths...
         </p>
       </div>
 
       <!-- Footer Info -->
-      <div class="flex items-center justify-between border-t border-neutral-100 dark:border-neutral-800/80 px-4 py-3 text-xs text-neutral-500 dark:text-neutral-400 bg-neutral-50 dark:bg-neutral-900/50">
+      <div class="flex items-center justify-between border-t border-neutral-100 dark:border-neutral-800/80 px-4 py-2.5 text-xs text-neutral-500 dark:text-neutral-400 bg-neutral-50 dark:bg-neutral-900/50">
         <div class="flex items-center gap-2">
-          <span>Navigate with</span>
+          <span>Navigate</span>
           <kbd class="px-1.5 py-0.5 rounded bg-neutral-200 dark:bg-neutral-800 font-mono text-[10px]">↑</kbd>
           <kbd class="px-1.5 py-0.5 rounded bg-neutral-200 dark:bg-neutral-800 font-mono text-[10px]">↓</kbd>
-          <span>to select</span>
+          <span>Select</span>
           <kbd class="px-1.5 py-0.5 rounded bg-neutral-200 dark:bg-neutral-800 font-mono text-[10px]">↵</kbd>
         </div>
         <div>
-          <span>Close with</span>
+          <span>Close</span>
           <kbd class="px-1.5 py-0.5 rounded bg-neutral-200 dark:bg-neutral-800 font-mono text-[10px]">ESC</kbd>
         </div>
       </div>
@@ -60,14 +91,12 @@ import { Search, X } from '@lucide/astro';
 
 <script>
   interface SearchItem {
-    type: 'post' | 'series';
+    type: 'post';
     title: string;
     description: string;
     tags: string[];
     url: string;
     date?: string;
-    level?: string;
-    series?: { id: string; name: string; order: number } | null;
   }
 
   function setupSearch() {
@@ -75,7 +104,9 @@ import { Search, X } from '@lucide/astro';
     const input = document.getElementById('search-input') as HTMLInputElement | null;
     const resultsContainer = document.getElementById('search-results');
     const closeBtn = document.getElementById('close-search');
+    const clearBtn = document.getElementById('clear-search');
     const triggerButtons = document.querySelectorAll('[data-search-trigger]');
+    const quickChips = document.querySelectorAll<HTMLButtonElement>('.quick-chip');
 
     if (!modal || !input || !resultsContainer) return;
 
@@ -99,16 +130,19 @@ import { Search, X } from '@lucide/astro';
     function openModal() {
       modal?.classList.remove('hidden');
       document.body.style.overflow = 'hidden';
-      loadSearchData();
+      loadSearchData().then(() => {
+        renderResults(input?.value.trim() || '');
+      });
       setTimeout(() => input?.focus(), 50);
-      renderResults(input?.value.trim() || '');
     }
 
     function closeModal() {
       modal?.classList.add('hidden');
       document.body.style.overflow = '';
       if (input) input.value = '';
+      if (clearBtn) clearBtn.classList.add('hidden');
       selectedIndex = -1;
+      updateActiveChip('');
     }
 
     triggerButtons.forEach((btn) => {
@@ -120,11 +154,57 @@ import { Search, X } from '@lucide/astro';
 
     closeBtn?.addEventListener('click', closeModal);
 
+    if (clearBtn) {
+      clearBtn.addEventListener('click', () => {
+        if (input) {
+          input.value = '';
+          clearBtn.classList.add('hidden');
+          input.focus();
+          renderResults('');
+          updateActiveChip('');
+        }
+      });
+    }
+
     modal.addEventListener('click', (e) => {
       if (e.target === modal || (e.target as HTMLElement).classList.contains('min-h-screen')) {
         closeModal();
       }
     });
+
+    // Quick chips event listener
+    quickChips.forEach((chip) => {
+      chip.addEventListener('click', () => {
+        const filterVal = chip.getAttribute('data-filter') || '';
+        if (input) {
+          input.value = filterVal;
+          if (filterVal) {
+            clearBtn?.classList.remove('hidden');
+          } else {
+            clearBtn?.classList.add('hidden');
+          }
+          input.focus();
+        }
+        updateActiveChip(filterVal);
+        renderResults(filterVal);
+      });
+    });
+
+    function updateActiveChip(query: string) {
+      quickChips.forEach((chip) => {
+        const filter = chip.getAttribute('data-filter')?.toLowerCase() || '';
+        if (query && (filter === query || (filter === '' && query === ''))) {
+          chip.classList.add('bg-neutral-900', 'text-white', 'dark:bg-neutral-100', 'dark:text-neutral-900', 'font-bold');
+          chip.classList.remove('bg-neutral-100', 'dark:bg-neutral-800', 'text-neutral-800', 'dark:text-neutral-200');
+        } else if (!query && filter === '') {
+          chip.classList.add('bg-neutral-900', 'text-white', 'dark:bg-neutral-100', 'dark:text-neutral-900', 'font-bold');
+          chip.classList.remove('bg-neutral-100', 'dark:bg-neutral-800', 'text-neutral-800', 'dark:text-neutral-200');
+        } else {
+          chip.classList.remove('bg-neutral-900', 'text-white', 'dark:bg-neutral-100', 'dark:text-neutral-900', 'font-bold');
+          chip.classList.add('bg-neutral-100', 'dark:bg-neutral-800', 'text-neutral-800', 'dark:text-neutral-200');
+        }
+      });
+    }
 
     // Keyboard shortcuts: ⌘K or / to open, ESC to close
     document.addEventListener('keydown', (e) => {
@@ -150,7 +230,14 @@ import { Search, X } from '@lucide/astro';
     // Search input handling
     input.addEventListener('input', () => {
       selectedIndex = -1;
-      renderResults(input.value.trim());
+      const val = input.value.trim();
+      if (val.length > 0) {
+        clearBtn?.classList.remove('hidden');
+      } else {
+        clearBtn?.classList.add('hidden');
+      }
+      updateActiveChip(val);
+      renderResults(val);
     });
 
     // Keyboard navigation in results
@@ -179,12 +266,19 @@ import { Search, X } from '@lucide/astro';
     function updateSelected(items: NodeListOf<HTMLAnchorElement>) {
       items.forEach((item, idx) => {
         if (idx === selectedIndex) {
-          item.classList.add('bg-blue-50', 'dark:bg-blue-900/30', 'border-blue-300', 'dark:border-blue-700');
+          item.classList.add('bg-neutral-200/80', 'dark:bg-neutral-800', 'border-neutral-900', 'dark:border-neutral-100');
           item.scrollIntoView({ block: 'nearest' });
         } else {
-          item.classList.remove('bg-blue-50', 'dark:bg-blue-900/30', 'border-blue-300', 'dark:border-blue-700');
+          item.classList.remove('bg-neutral-200/80', 'dark:bg-neutral-800', 'border-neutral-900', 'dark:border-neutral-100');
         }
       });
+    }
+
+    function highlightMatch(text: string, query: string): string {
+      if (!query) return text;
+      const safeQuery = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      const regex = new RegExp(`(${safeQuery})`, 'gi');
+      return text.replace(regex, `<mark class="bg-neutral-200 dark:bg-neutral-700 text-neutral-900 dark:text-white px-0.5 rounded font-bold underline">$1</mark>`);
     }
 
     function renderResults(query: string) {
@@ -195,17 +289,18 @@ import { Search, X } from '@lucide/astro';
         const previewItems = searchData.slice(0, 5);
         if (previewItems.length === 0) {
           resultsContainer.innerHTML = `
-            <p class="text-sm text-neutral-500 dark:text-neutral-400 text-center py-6">
-              Type to search through learning tracks and articles...
-            </p>`;
+            <div class="text-center py-8 text-neutral-500 dark:text-neutral-400">
+              <p class="text-sm font-medium">No articles indexed yet.</p>
+            </div>
+          `;
           return;
         }
 
         resultsContainer.innerHTML = `
-          <div class="px-2 py-1 text-xs font-semibold text-neutral-400 dark:text-neutral-500 uppercase tracking-wider">
-            Featured / Recent
+          <div class="px-3 py-1 text-[11px] font-bold font-mono text-neutral-500 uppercase tracking-widest">
+            FEATURED & RECENT
           </div>
-          ${previewItems.map((item, idx) => buildItemHTML(item, idx)).join('')}
+          ${previewItems.map((item, idx) => buildItemHTML(item, idx, '')).join('')}
         `;
         return;
       }
@@ -215,54 +310,52 @@ import { Search, X } from '@lucide/astro';
         return (
           item.title.toLowerCase().includes(q) ||
           item.description.toLowerCase().includes(q) ||
-          item.tags.some((t) => t.toLowerCase().includes(q)) ||
-          (item.series && item.series.name.toLowerCase().includes(q))
+          item.tags.some((t) => t.toLowerCase().includes(q))
         );
       });
 
       if (filtered.length === 0) {
         resultsContainer.innerHTML = `
           <div class="text-center py-8 text-neutral-500 dark:text-neutral-400">
-            <p class="text-sm font-medium">No results found for "${query}"</p>
-            <p class="text-xs mt-1 text-neutral-400">Try searching for concepts like "docker", "caching", or "containers"</p>
+            <p class="text-sm font-bold text-neutral-800 dark:text-neutral-200">No results found for "${query}"</p>
+            <p class="text-xs mt-1 text-neutral-400">Try searching for keywords like "docker", "caching", or "containers"</p>
           </div>
         `;
         return;
       }
 
       resultsContainer.innerHTML = `
-        <div class="px-2 py-1 text-xs font-semibold text-neutral-400 dark:text-neutral-500 uppercase tracking-wider">
-          Found ${filtered.length} ${filtered.length === 1 ? 'match' : 'matches'}
+        <div class="px-3 py-1 text-[11px] font-bold font-mono text-neutral-500 uppercase tracking-widest">
+          MATCHES (${filtered.length})
         </div>
-        ${filtered.map((item, idx) => buildItemHTML(item, idx)).join('')}
+        ${filtered.map((item, idx) => buildItemHTML(item, idx, query)).join('')}
       `;
     }
 
-    function buildItemHTML(item: SearchItem, idx: number): string {
-      const isSeries = item.type === 'series';
-      const badge = isSeries
-        ? `<span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-medium bg-purple-100 text-purple-800 dark:bg-purple-900/40 dark:text-purple-300">Learning Path</span>`
-        : item.series
-          ? `<span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-medium bg-blue-100 text-blue-800 dark:bg-blue-900/40 dark:text-blue-300">Part ${item.series.order} • ${item.series.name}</span>`
-          : `<span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-medium bg-neutral-100 text-neutral-700 dark:bg-neutral-800 dark:text-neutral-300">Article</span>`;
+    function buildItemHTML(item: SearchItem, idx: number, query: string): string {
+      const primaryTag = item.tags[0] ? `#${item.tags[0]}` : 'NOTE';
+      const badge = `<span class="comic-stamp bg-neutral-100 text-neutral-800 dark:bg-neutral-800 dark:text-neutral-200 border-neutral-300 dark:border-neutral-700">${primaryTag}</span>`;
+
+      const titleHighlighted = highlightMatch(item.title, query);
+      const descHighlighted = highlightMatch(item.description, query);
 
       return `
         <a
           href="${item.url}"
           data-index="${idx}"
-          class="search-result-item block p-3 rounded-xl border border-transparent hover:bg-neutral-100 dark:hover:bg-neutral-800/80 transition-colors group"
+          class="search-result-item block p-3 rounded-xl border-2 border-transparent hover:border-neutral-900 dark:hover:border-neutral-100 hover:bg-white dark:hover:bg-neutral-800 transition-all group"
         >
           <div class="flex items-center justify-between gap-2 mb-1">
             <div class="flex items-center gap-2">
               ${badge}
             </div>
-            ${item.date ? `<span class="text-xs text-neutral-400 dark:text-neutral-500">${item.date}</span>` : ''}
+            ${item.date ? `<span class="text-xs font-mono text-neutral-400">${item.date}</span>` : ''}
           </div>
-          <h4 class="text-sm font-semibold text-neutral-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
-            ${item.title}
+          <h4 class="text-sm font-bold text-neutral-900 dark:text-white group-hover:underline">
+            ${titleHighlighted}
           </h4>
-          <p class="text-xs text-neutral-500 dark:text-neutral-400 line-clamp-1 mt-0.5">
-            ${item.description}
+          <p class="text-xs text-neutral-600 dark:text-neutral-400 line-clamp-1 mt-0.5 leading-relaxed">
+            ${descHighlighted}
           </p>
         </a>
       `;

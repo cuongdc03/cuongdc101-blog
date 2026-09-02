@@ -2,9 +2,7 @@
 import BaseLayout from './BaseLayout.astro';
 import FormattedDate from '../components/FormattedDate.astro';
 import TableOfContents from '../components/TableOfContents.astro';
-import SeriesBanner from '../components/SeriesBanner.astro';
-import SeriesNav from '../components/SeriesNav.astro';
-import { ArrowLeft, Clock, Calendar, ChevronRight } from '@lucide/astro';
+import { Clock, Calendar, ChevronRight, Share2 } from '@lucide/astro';
 
 export interface Props {
   title: string;
@@ -13,11 +11,6 @@ export interface Props {
   updatedDate?: Date;
   heroImage?: string;
   tags?: string[];
-  series?: {
-    id: string;
-    order: number;
-    title?: string;
-  };
   headings: {
     depth: number;
     slug: string;
@@ -33,7 +26,6 @@ const {
   updatedDate,
   heroImage,
   tags = [],
-  series,
   headings = [],
   body = '',
 } = Astro.props;
@@ -44,36 +36,28 @@ const readingTime = Math.max(1, Math.ceil(wordCount / 200));
 ---
 
 <BaseLayout title={title} description={description} image={heroImage} articleDate={pubDate.toISOString()}>
-  <!-- Breadcrumb Navigation -->
-  <nav class="flex items-center gap-2 text-xs text-neutral-500 dark:text-neutral-400 mb-6">
-    <a href="/blog" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors flex items-center gap-1">
-      <ArrowLeft class="w-3.5 h-3.5" />
-      <span>All Articles</span>
-    </a>
+  <!-- Reading Progress Bar -->
+  <div id="reading-progress" class="fixed top-0 left-0 right-0 h-1 bg-neutral-900 dark:bg-neutral-100 z-50 scale-x-0" aria-hidden="true"></div>
 
-    {
-      series && (
-        <>
-          <ChevronRight class="w-3.5 h-3.5 text-neutral-400 dark:text-neutral-600" />
-          <a
-            href={`/series/${series.id}`}
-            class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors truncate max-w-xs"
-          >
-            {series.title || 'Learning Path'}
-          </a>
-        </>
-      )
-    }
+  <!-- Breadcrumb Navigation -->
+  <nav class="flex items-center gap-2 text-xs mb-6 flex-wrap font-mono">
+    <a href="/" class="manga-stamp-outline px-2.5 py-1 hover:bg-neutral-900 hover:text-white dark:hover:bg-neutral-100 dark:hover:text-neutral-900 transition-colors">
+      HOME
+    </a>
+    <ChevronRight class="w-3.5 h-3.5 text-neutral-400 shrink-0" />
+    <a href="/blog" class="manga-stamp-outline px-2.5 py-1 hover:bg-neutral-900 hover:text-white dark:hover:bg-neutral-100 dark:hover:text-neutral-900 transition-colors">
+      DISPATCHES
+    </a>
   </nav>
 
   <!-- Post Header -->
-  <header class="mb-10 pb-8 border-b border-neutral-200 dark:border-neutral-800">
-    <div class="flex items-center gap-2 flex-wrap text-xs mb-3">
+  <header class="mb-10 pb-8 border-b-[1.5px] border-neutral-900 dark:border-neutral-100">
+    <div class="flex items-center gap-2 flex-wrap text-xs mb-3 font-mono">
       {
         tags.map((tag) => (
           <a
             href={`/tags/${tag}`}
-            class="px-2.5 py-1 rounded-full bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-300 font-medium hover:bg-blue-100 hover:text-blue-700 dark:hover:bg-blue-900/40 dark:hover:text-blue-300 transition-colors"
+            class="manga-stamp"
           >
             #{tag}
           </a>
@@ -81,55 +65,122 @@ const readingTime = Math.max(1, Math.ceil(wordCount / 200));
       }
     </div>
 
-    <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-neutral-900 dark:text-white leading-[1.15] mb-4">
+    <h1 class="font-manga text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-neutral-900 dark:text-white leading-[1.15] mb-4">
       {title}
     </h1>
 
-    <p class="text-lg sm:text-xl text-neutral-600 dark:text-neutral-300 leading-relaxed max-w-3xl mb-6">
+    <p class="text-base sm:text-lg text-neutral-600 dark:text-neutral-400 leading-relaxed max-w-3xl mb-6 font-normal">
       {description}
     </p>
 
-    <!-- Meta Details -->
-    <div class="flex items-center gap-4 text-xs sm:text-sm text-neutral-500 dark:text-neutral-400 flex-wrap">
-      <div class="flex items-center gap-1.5">
-        <Calendar class="w-4 h-4" />
-        <FormattedDate date={pubDate} />
+    <!-- Meta Details & Utility Actions -->
+    <div class="flex items-center justify-between gap-4 text-xs sm:text-sm text-neutral-500 dark:text-neutral-400 flex-wrap pt-2">
+      <div class="flex items-center gap-3 sm:gap-4 flex-wrap font-mono text-xs">
+        <span class="inline-flex items-center gap-1.5">
+          <Calendar class="w-3.5 h-3.5 text-neutral-500" />
+          <FormattedDate date={pubDate} />
+        </span>
+
+        {
+          updatedDate && (
+            <span class="text-neutral-400">
+              (Updated <FormattedDate date={updatedDate} />)
+            </span>
+          )
+        }
+
+        <span>•</span>
+
+        <span class="inline-flex items-center gap-1.5">
+          <Clock class="w-3.5 h-3.5 text-neutral-500" />
+          <span>{readingTime} MIN READ</span>
+        </span>
       </div>
 
-      <span class="text-neutral-300 dark:text-neutral-700">•</span>
-
-      <div class="flex items-center gap-1.5">
-        <Clock class="w-4 h-4" />
-        <span>{readingTime} min read</span>
-      </div>
-
-      {
-        updatedDate && (
-          <>
-            <span class="text-neutral-300 dark:text-neutral-700">•</span>
-            <span class="italic">Updated <FormattedDate date={updatedDate} /></span>
-          </>
-        )
-      }
+      <!-- Share / Copy Link Button -->
+      <button
+        id="share-article-btn"
+        type="button"
+        class="manga-btn-secondary px-3 py-1.5 text-xs gap-1.5 font-mono"
+        aria-label="Copy link to clipboard"
+      >
+        <Share2 class="w-3.5 h-3.5" />
+        <span id="share-label">SHARE LINK</span>
+      </button>
     </div>
   </header>
+
+  <!-- Featured Hero Image (if available) -->
+  {
+    heroImage && (
+      <div class="mb-10">
+        <div class="aspect-[16/9] w-full overflow-hidden border border-neutral-900 dark:border-neutral-100 bg-neutral-100 dark:bg-neutral-800 shadow-[4px_4px_0px_0px_#111111] dark:shadow-[4px_4px_0px_0px_#fcfbf7]">
+          <img
+            src={heroImage}
+            alt={title}
+            class="w-full h-full object-cover"
+          />
+        </div>
+        <div class="mt-2 flex items-center justify-between text-[11px] font-mono text-neutral-500">
+          <span>PLATE I. — FIELD RECORD</span>
+          <span>SAIGON ARCHIVE</span>
+        </div>
+      </div>
+    )
+  }
 
   <!-- Content & TOC Grid -->
   <div class="grid grid-cols-1 lg:grid-cols-[1fr_260px] gap-12 items-start">
     <article class="min-w-0">
-      {/* If this post is part of a series, show the interactive series box */}
-      {series && <SeriesBanner seriesId={series.id} currentOrder={series.order} />}
-
       {/* Main Prose Article */}
-      <div class="prose prose-neutral dark:prose-invert max-w-none prose-headings:scroll-mt-24 prose-headings:font-bold prose-h2:text-2xl prose-h3:text-xl prose-a:text-blue-600 dark:prose-a:text-blue-400 prose-a:no-underline hover:prose-a:underline prose-code:text-blue-600 dark:prose-code:text-blue-300 prose-code:before:content-none prose-code:after:content-none prose-code:bg-neutral-100 dark:prose-code:bg-neutral-800 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded-md prose-img:rounded-xl">
+      <div class="prose prose-neutral dark:prose-invert max-w-none prose-headings:font-black prose-headings:tracking-tight prose-h2:text-2xl prose-h3:text-xl prose-a:font-bold prose-a:underline hover:prose-a:opacity-80 prose-img:rounded-xl prose-img:border prose-img:border-neutral-900 dark:prose-img:border-neutral-100 prose-img:shadow-[4px_4px_0px_0px_#111111] dark:prose-img:shadow-[4px_4px_0px_0px_#fcfbf7]">
         <slot />
       </div>
-
-      {/* Series Next / Previous Navigation */}
-      {series && <SeriesNav seriesId={series.id} currentOrder={series.order} />}
     </article>
 
     <!-- Right Sidebar: Sticky Table of Contents -->
     <TableOfContents headings={headings} />
   </div>
+
+  <!-- Reading Progress and Share Script -->
+  <script>
+    function setupArticleUtilities() {
+      // 1. Reading Progress Bar
+      const progressBar = document.getElementById('reading-progress');
+      if (progressBar) {
+        const updateProgress = () => {
+          const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
+          if (totalHeight <= 0) {
+            progressBar.style.transform = 'scaleX(0)';
+            return;
+          }
+          const progress = Math.min(1, Math.max(0, window.scrollY / totalHeight));
+          progressBar.style.transform = `scaleX(${progress})`;
+        };
+
+        window.addEventListener('scroll', updateProgress, { passive: true });
+        updateProgress();
+      }
+
+      // 2. Share / Copy Link Button
+      const shareBtn = document.getElementById('share-article-btn');
+      const shareLabel = document.getElementById('share-label');
+      if (shareBtn && shareLabel) {
+        shareBtn.addEventListener('click', async () => {
+          try {
+            await navigator.clipboard.writeText(window.location.href);
+            shareLabel.innerText = 'Copied!';
+            setTimeout(() => {
+              shareLabel.innerText = 'Share Link';
+            }, 2000);
+          } catch (err) {
+            console.error('Could not copy URL:', err);
+          }
+        });
+      }
+    }
+
+    setupArticleUtilities();
+    document.addEventListener('astro:after-swap', setupArticleUtilities);
+  </script>
 </BaseLayout>

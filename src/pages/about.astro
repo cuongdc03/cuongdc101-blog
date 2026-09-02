@@ -1,7 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { SITE_AUTHOR, SOCIAL_LINKS } from '../consts';
-import { Terminal, Target, Code } from '@lucide/astro';
+import { Target, Code } from '@lucide/astro';
 import GithubIcon from '../components/GithubIcon.astro';
 
 const learningGoals = [
@@ -31,95 +31,135 @@ const techStack = [
 ---
 
 <BaseLayout
-  title="About & Roadmap"
+  title="Character Dossier & About"
   description={`About ${SITE_AUTHOR}, learning philosophy, active roadmaps, and tech stack.`}
 >
-  <div class="max-w-3xl mx-auto space-y-12">
-    <!-- Bio Section -->
-    <header class="space-y-4">
-      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-blue-50 text-blue-700 dark:bg-blue-950/60 dark:text-blue-300 border border-blue-200 dark:border-blue-800">
-        <Terminal class="w-3.5 h-3.5" />
-        <span>About the Author</span>
-      </div>
+  <div class="max-w-4xl mx-auto space-y-12">
+    <!-- Bio Dossier Panel -->
+    <header class="manga-panel p-6 sm:p-8 relative bg-white dark:bg-[#18181c]">
+      <div class="absolute inset-0 screentone pointer-events-none"></div>
+      <div class="relative grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-8 items-center">
+        <!-- Photo with Ink Frame -->
+        <div class="md:col-span-4">
+          <div class="relative aspect-square overflow-hidden border border-neutral-900 dark:border-neutral-100 bg-neutral-100 dark:bg-neutral-800">
+            <img
+              src="/images/cuong.jpg"
+              alt="Cao-Cuong Do in workspace"
+              class="w-full h-full object-cover grayscale contrast-125 hover:grayscale-0 transition-all duration-300"
+            />
+            <div class="absolute bottom-2 left-2 right-2 px-2 py-0.5 bg-neutral-900/90 dark:bg-neutral-100/90 text-[#fcfbf7] dark:text-neutral-900 text-[10px] font-mono flex items-center justify-between">
+              <span>FIGURE 1.0</span>
+              <span>SAIGON</span>
+            </div>
+          </div>
+          <div class="mt-3 flex items-center justify-between font-mono text-[10px] font-bold">
+            <span class="manga-stamp">
+              ORIGIN: SAIGON
+            </span>
+            <span class="text-neutral-500">CLASS: BUILDER</span>
+          </div>
+        </div>
 
-      <h1 class="text-3xl sm:text-5xl font-extrabold text-neutral-900 dark:text-white tracking-tight">
-        Hey, I'm {SITE_AUTHOR}.
-      </h1>
+        <!-- Bio Text -->
+        <div class="md:col-span-8 space-y-4">
+          <div class="inline-block">
+            <div class="manga-bubble px-3.5 py-1.5 font-mono text-xs font-bold text-neutral-900 dark:text-neutral-100">
+              「 Documenting the journey one commit at a time. 」
+            </div>
+          </div>
 
-      <p class="text-lg text-neutral-600 dark:text-neutral-300 leading-relaxed">
-        I am a software engineer passionate about building reliable, scalable systems and breaking down complex technical architectures into intuitive, hands-on mental models.
-      </p>
+          <h1 class="font-manga text-3xl sm:text-4xl font-black text-neutral-900 dark:text-white tracking-tight">
+            Cao-Cuong Do
+          </h1>
 
-      <p class="text-base text-neutral-600 dark:text-neutral-300 leading-relaxed">
-        This blog is my <strong>digital garden and public learning log</strong>. Whenever I explore a new technology, debug an intricate edge-case, or study a computer science fundamental, I distill it into structured chapters and articles here.
-      </p>
+          <p class="text-sm sm:text-base text-neutral-700 dark:text-neutral-300 leading-relaxed font-normal">
+            I'm a software engineer fascinated by what happens beneath the abstractions—how containers isolate processes at the kernel level, how distributed nodes agree under network partitions, and how lean software scales reliably.
+          </p>
 
-      <div class="pt-2 flex items-center gap-3">
-        <a
-          href={SOCIAL_LINKS.github}
-          target="_blank"
-          rel="noopener noreferrer"
-          class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-neutral-900 hover:bg-neutral-800 text-white dark:bg-white dark:text-neutral-900 dark:hover:bg-neutral-200 text-xs font-semibold transition-colors"
-        >
-          <GithubIcon class="w-4 h-4" />
-          <span>Follow on GitHub</span>
-        </a>
+          <p class="text-sm sm:text-base text-neutral-700 dark:text-neutral-300 leading-relaxed font-normal">
+            This digital garden is my <strong>public laboratory and workbench</strong>. When I tackle complex systems, I break them down into practical, hands-on writeups so fellow developers can level up alongside me.
+          </p>
+
+          <div class="pt-2 flex items-center gap-3">
+            <a
+              href={SOCIAL_LINKS.github}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="manga-btn px-4 py-2 text-xs font-mono font-bold gap-2"
+            >
+              <GithubIcon class="w-4 h-4" />
+              <span>GITHUB PROFILE ↗</span>
+            </a>
+          </div>
+        </div>
       </div>
     </header>
 
-    <!-- Learning Roadmap Section -->
-    <section class="space-y-6 pt-8 border-t border-neutral-200 dark:border-neutral-800">
-      <div class="flex items-center gap-2">
-        <Target class="w-5 h-5 text-blue-600 dark:text-blue-400" />
-        <h2 class="text-xl font-bold text-neutral-900 dark:text-white">
-          Active Learning Roadmap
-        </h2>
+    <!-- Learning Roadmap Section: Current Quests -->
+    <section class="space-y-6 pt-4">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <Target class="w-5 h-5 text-neutral-900 dark:text-white" />
+          <h2 class="font-manga text-2xl font-black text-neutral-900 dark:text-white tracking-tight">
+            Current Quests & Focus Areas
+          </h2>
+        </div>
+        <span class="manga-stamp">
+          IN-FLIGHT
+        </span>
       </div>
 
-      <p class="text-sm text-neutral-600 dark:text-neutral-400">
-        Topics I am currently exploring, researching, and turning into upcoming series:
+      <p class="text-xs sm:text-sm text-neutral-600 dark:text-neutral-400 font-normal">
+        Active technical research topics being forged into upcoming writeups:
       </p>
 
       <div class="grid grid-cols-1 gap-4">
         {
-          learningGoals.map((goal) => (
-            <div class="p-5 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900/40">
-              <div class="flex items-center justify-between gap-2 mb-2">
-                <h3 class="text-base font-bold text-neutral-900 dark:text-white">
-                  {goal.topic}
-                </h3>
-                <span class="px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-blue-50 text-blue-700 dark:bg-blue-950/80 dark:text-blue-300 border border-blue-200 dark:border-blue-800">
-                  {goal.status}
-                </span>
+          learningGoals.map((goal) => {
+            return (
+              <div class="manga-panel p-5 sm:p-6 bg-white dark:bg-[#18181c]">
+                <div class="flex items-center justify-between gap-2 mb-2">
+                  <h3 class="font-manga text-base sm:text-lg font-bold text-neutral-900 dark:text-white">
+                    {goal.topic}
+                  </h3>
+                  <span class="manga-stamp-outline text-[10px] font-mono px-2 py-0.5 font-bold">
+                    {goal.status}
+                  </span>
+                </div>
+                <p class="text-xs sm:text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed font-normal">
+                  {goal.desc}
+                </p>
               </div>
-              <p class="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed">
-                {goal.desc}
-              </p>
-            </div>
-          ))
+            );
+          })
         }
       </div>
     </section>
 
-    <!-- Tech Stack Section -->
-    <section class="space-y-6 pt-8 border-t border-neutral-200 dark:border-neutral-800">
-      <div class="flex items-center gap-2">
-        <Code class="w-5 h-5 text-blue-600 dark:text-blue-400" />
-        <h2 class="text-xl font-bold text-neutral-900 dark:text-white">
-          Technical Toolkit
-        </h2>
+    <!-- Tech Stack Section: Inventory & Gear -->
+    <section class="space-y-6 pt-4">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <Code class="w-5 h-5 text-neutral-900 dark:text-white" />
+          <h2 class="font-manga text-2xl font-black text-neutral-900 dark:text-white tracking-tight">
+            Inventory & Tooling
+          </h2>
+        </div>
+        <span class="manga-stamp">
+          EQUIPPED
+        </span>
       </div>
 
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
         {
           techStack.map((group) => (
-            <div class="p-5 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900/40">
-              <h3 class="text-xs font-bold uppercase tracking-wider text-neutral-400 dark:text-neutral-500 mb-3">
+            <div class="manga-panel p-5 bg-white dark:bg-[#18181c]">
+              <h3 class="text-xs font-mono font-bold uppercase tracking-wider text-neutral-500 dark:text-neutral-400 mb-3.5">
                 {group.category}
               </h3>
-              <div class="flex flex-wrap gap-1.5">
+              <div class="flex flex-wrap gap-1.5 font-mono">
                 {group.items.map((item) => (
-                  <span class="px-2.5 py-1 rounded-lg text-xs font-mono bg-neutral-100 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300">
+                  <span class="manga-stamp-outline px-2 py-0.5 text-[11px] font-bold">
                     {item}
                   </span>
                 ))}

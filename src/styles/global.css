@@ -11,39 +11,395 @@
   color-scheme: dark;
 }
 
+/* Soft manga paper palette & base rendering */
+html {
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  background-color: #fcfbf7;
+  color: #111111;
+  font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+html.dark body {
+  background-color: #111113;
+  color: #fcfbf7;
+}
+
+.font-manga {
+  font-family: 'Zen Kaku Gothic New', 'Space Grotesk', sans-serif;
+}
+
+/* Accessible focus visible */
+:focus-visible {
+  outline: 2px solid #111111;
+  outline-offset: 2px;
+}
+
+html.dark :focus-visible {
+  outline-color: #fcfbf7;
+}
+
+/* Selection */
+::selection {
+  background-color: #111111;
+  color: #fcfbf7;
+}
+
+html.dark ::selection {
+  background-color: #fcfbf7;
+  color: #111111;
+}
+
 /* Custom scrollbar */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
 }
 ::-webkit-scrollbar-track {
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(156, 163, 175, 0.4);
-  border-radius: 4px;
+  background: #a1a1aa;
+  border-radius: 9999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(156, 163, 175, 0.6);
+  background: #71717a;
 }
 
-/* Shiki code block styles */
+/* Manga Screentone Dot Texture */
+.screentone {
+  background-image: radial-gradient(#111111 1px, transparent 1px);
+  background-size: 6px 6px;
+  opacity: 0.12;
+}
+
+html.dark .screentone {
+  background-image: radial-gradient(#ffffff 1px, transparent 1px);
+  opacity: 0.16;
+}
+
+/* Manga Panel Containers (1.5px fine ink border, 4px shadow) */
+.manga-panel,
+.comic-panel {
+  border: 1.5px solid #111111;
+  box-shadow: 4px 4px 0px 0px #111111;
+  background-color: #ffffff;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+html.dark .manga-panel,
+html.dark .comic-panel {
+  border-color: #fcfbf7;
+  box-shadow: 4px 4px 0px 0px #fcfbf7;
+  background-color: #18181c;
+}
+
+.manga-panel:hover,
+.comic-panel-hover:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0px 0px #111111;
+}
+
+html.dark .manga-panel:hover,
+html.dark .comic-panel-hover:hover {
+  box-shadow: 6px 6px 0px 0px #fcfbf7;
+}
+
+/* Manga Ink Buttons */
+.manga-btn,
+.comic-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-weight: 700;
+  border: 1.5px solid #111111;
+  background-color: #111111;
+  color: #fcfbf7;
+  box-shadow: 2.5px 2.5px 0px 0px #111111;
+  transition: all 0.15s ease;
+  cursor: pointer;
+}
+
+html.dark .manga-btn,
+html.dark .comic-btn {
+  border-color: #fcfbf7;
+  background-color: #fcfbf7;
+  color: #111111;
+  box-shadow: 2.5px 2.5px 0px 0px #fcfbf7;
+}
+
+.manga-btn:hover,
+.comic-btn:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 3.5px 3.5px 0px 0px #111111;
+}
+
+html.dark .manga-btn:hover,
+html.dark .comic-btn:hover {
+  box-shadow: 3.5px 3.5px 0px 0px #fcfbf7;
+}
+
+.manga-btn:active,
+.comic-btn:active {
+  transform: translate(2px, 2px);
+  box-shadow: 0px 0px 0px 0px transparent !important;
+}
+
+.manga-btn-secondary,
+.comic-btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-weight: 700;
+  border: 1.5px solid #111111;
+  background-color: #ffffff;
+  color: #111111;
+  box-shadow: 2.5px 2.5px 0px 0px #111111;
+  transition: all 0.15s ease;
+  cursor: pointer;
+}
+
+html.dark .manga-btn-secondary,
+html.dark .comic-btn-secondary {
+  border-color: #fcfbf7;
+  background-color: #18181c;
+  color: #fcfbf7;
+  box-shadow: 2.5px 2.5px 0px 0px #fcfbf7;
+}
+
+.manga-btn-secondary:hover,
+.comic-btn-secondary:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 3.5px 3.5px 0px 0px #111111;
+}
+
+html.dark .manga-btn-secondary:hover,
+html.dark .comic-btn-secondary:hover {
+  box-shadow: 3.5px 3.5px 0px 0px #fcfbf7;
+}
+
+.manga-btn-secondary:active,
+.comic-btn-secondary:active {
+  transform: translate(2px, 2px);
+  box-shadow: 0px 0px 0px 0px transparent !important;
+}
+
+/* Manga Stamp Badge */
+.manga-stamp,
+.comic-stamp {
+  display: inline-flex;
+  align-items: center;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border: 1px solid #111111;
+  padding: 2px 7px;
+  background: #111111;
+  color: #fcfbf7;
+  line-height: 1.2;
+}
+
+html.dark .manga-stamp,
+html.dark .comic-stamp {
+  border-color: #fcfbf7;
+  background: #fcfbf7;
+  color: #111111;
+}
+
+.manga-stamp-outline,
+.comic-stamp-outline {
+  background: transparent !important;
+  color: #111111 !important;
+  border: 1px solid #111111 !important;
+}
+
+html.dark .manga-stamp-outline,
+html.dark .comic-stamp-outline {
+  background: transparent !important;
+  color: #fcfbf7 !important;
+  border: 1px solid #fcfbf7 !important;
+}
+
+/* Manga Speech Bubble */
+.manga-bubble,
+.comic-speech-bubble {
+  position: relative;
+  background: #ffffff;
+  border: 1.5px solid #111111;
+  border-radius: 16px;
+  box-shadow: 2.5px 2.5px 0px 0px #111111;
+}
+
+html.dark .manga-bubble,
+html.dark .comic-speech-bubble {
+  background: #18181c;
+  border-color: #fcfbf7;
+  box-shadow: 2.5px 2.5px 0px 0px #fcfbf7;
+}
+
+.manga-bubble::after,
+.comic-speech-bubble::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  left: 20px;
+  width: 12px;
+  height: 12px;
+  background: #ffffff;
+  border-right: 1.5px solid #111111;
+  border-bottom: 1.5px solid #111111;
+  transform: rotate(45deg);
+}
+
+html.dark .manga-bubble::after,
+html.dark .comic-speech-bubble::after {
+  background: #18181c;
+  border-right-color: #fcfbf7;
+  border-bottom-color: #fcfbf7;
+}
+
+/* Reading Progress Bar at top of article */
+#reading-progress {
+  transform-origin: left;
+  transition: transform 75ms ease-out;
+  background-color: #18181b;
+}
+
+html.dark #reading-progress {
+  background-color: #f4f4f5;
+}
+
+/* Code block styling (Shiki & Astro Code) */
+.prose pre,
+pre.astro-code,
 pre.shiki {
-  padding: 1.25rem;
-  border-radius: 0.75rem;
+  position: relative;
+  padding: 1.25rem 1.25rem;
+  border-radius: 0.5rem;
   overflow-x: auto;
-  font-size: 0.9rem;
-  line-height: 1.6;
+  font-size: 0.85rem;
+  line-height: 1.65;
+  border: 1.5px solid #111111 !important;
+  box-shadow: 4px 4px 0px 0px #111111 !important;
+  background-color: #ffffff !important;
+  color: #24292e !important;
 }
 
-html.dark .shiki,
+html.dark .prose pre,
+html.dark pre.astro-code,
+html.dark pre.shiki {
+  border-color: #fcfbf7 !important;
+  box-shadow: 4px 4px 0px 0px #fcfbf7 !important;
+  background-color: var(--shiki-dark-bg, #18181c) !important;
+  color: var(--shiki-dark, #adbac7) !important;
+}
+
+/* Ensure code element inside pre has no background, padding, or borders */
+.prose pre code,
+pre.astro-code code,
+pre.shiki code {
+  background-color: transparent !important;
+  border: none !important;
+  border-radius: 0 !important;
+  padding: 0 !important;
+  box-shadow: none !important;
+  font-size: inherit !important;
+  color: inherit !important;
+}
+
+/* Dark mode syntax highlighting tokens */
+html.dark .astro-code span,
 html.dark .shiki span {
-  color: var(--shiki-dark) !important;
-  background-color: var(--shiki-dark-bg) !important;
+  color: var(--shiki-dark, inherit) !important;
+  background-color: transparent !important;
 }
 
-html:not(.dark) .shiki,
+html:not(.dark) .astro-code span,
 html:not(.dark) .shiki span {
-  color: var(--shiki-light) !important;
-  background-color: var(--shiki-light-bg) !important;
+  background-color: transparent !important;
+}
+
+/* Inline code formatting (outside pre) */
+.prose :not(pre) > code {
+  background-color: #f0eee6;
+  color: #111111;
+  padding: 0.15rem 0.35rem;
+  border-radius: 0.25rem;
+  border: 1px solid #d4d0c5;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.85em;
+  font-weight: 600;
+}
+
+html.dark .prose :not(pre) > code {
+  background-color: #222227;
+  color: #fcfbf7;
+  border-color: #38383e;
+}
+
+/* Markdown Table formatting */
+.prose table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.75rem 0;
+  font-size: 0.875rem;
+  border: 1.5px solid #111111;
+  box-shadow: 4px 4px 0px 0px #111111;
+  border-radius: 0.5rem;
+  overflow: hidden;
+}
+
+html.dark .prose table {
+  border-color: #fcfbf7;
+  box-shadow: 4px 4px 0px 0px #fcfbf7;
+}
+
+.prose th {
+  text-align: left;
+  padding: 0.75rem 1rem;
+  background-color: #f0eee6;
+  border-bottom: 1.5px solid #111111;
+  font-weight: 700;
+  font-family: ui-monospace, SFMono-Regular, monospace;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+html.dark .prose th {
+  background-color: #222227;
+  border-bottom-color: #fcfbf7;
+}
+
+.prose td {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid #e4e4e7;
+}
+
+html.dark .prose td {
+  border-bottom-color: #27272a;
+}
+
+/* Prose blockquote styling */
+.prose blockquote {
+  font-style: normal;
+  border: 2px solid #18181b;
+  box-shadow: 2px 2px 0px 0px #18181b;
+  background-color: #ffffff;
+  padding: 1rem 1.25rem;
+  border-radius: 0.75rem;
+}
+
+html.dark .prose blockquote {
+  background-color: #18181b;
+  border-color: #f4f4f5;
+  box-shadow: 2px 2px 0px 0px #f4f4f5;
 }

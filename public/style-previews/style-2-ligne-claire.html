@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Style 2: Ligne Claire (Clean-Line Graphic Novel)</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;1,6..72,400&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: #faf7ee;
+      color: #262422;
+    }
+    .font-serif { font-family: 'Newsreader', serif; }
+    .font-mono { font-family: 'IBM Plex Mono', monospace; }
+
+    /* Ligne Claire: Perfectly uniform 1.5px lines, warm cream background, subtle paper shadow */
+    .ligne-panel {
+      background: #ffffff;
+      border: 1.5px solid #262422;
+      border-radius: 20px;
+      box-shadow: 3px 3px 0px 0px rgba(38, 36, 34, 0.8);
+      transition: all 0.25s ease;
+    }
+    .ligne-panel:hover {
+      transform: translateY(-2px);
+      box-shadow: 4px 5px 0px 0px rgba(38, 36, 34, 0.9);
+    }
+
+    /* Classic European Oval Speech Balloon with smooth curved tail */
+    .ligne-balloon {
+      position: relative;
+      background: #ffffff;
+      border: 1.5px solid #262422;
+      border-radius: 24px;
+      display: inline-block;
+      padding: 8px 18px;
+    }
+    .ligne-balloon::after {
+      content: "";
+      position: absolute;
+      bottom: -10px;
+      left: 28px;
+      border-width: 10px 10px 0;
+      border-style: solid;
+      border-color: #ffffff transparent;
+      display: block;
+      width: 0;
+    }
+    .ligne-balloon::before {
+      content: "";
+      position: absolute;
+      bottom: -12px;
+      left: 27px;
+      border-width: 11px 11px 0;
+      border-style: solid;
+      border-color: #262422 transparent;
+      display: block;
+      width: 0;
+    }
+
+    /* Comic Caption Box (like Tintin narration) */
+    .ligne-caption {
+      background: #f3efe3;
+      border: 1.5px solid #262422;
+      border-radius: 8px;
+      padding: 4px 10px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .ligne-btn {
+      background: #262422;
+      color: #faf7ee;
+      border: 1.5px solid #262422;
+      border-radius: 12px;
+      box-shadow: 2.5px 2.5px 0px 0px rgba(38, 36, 34, 0.4);
+      transition: all 0.15s ease;
+    }
+    .ligne-btn:hover {
+      transform: translate(-1px, -1px);
+      box-shadow: 3.5px 3.5px 0px 0px rgba(38, 36, 34, 0.6);
+    }
+    .ligne-btn:active {
+      transform: translate(2px, 2px);
+      box-shadow: none;
+    }
+  </style>
+</head>
+<body class="min-h-screen py-10 px-4 sm:px-8">
+  <div class="max-w-4xl mx-auto space-y-12">
+
+    <!-- Top Navigation -->
+    <header class="flex items-center justify-between border-b-2 border-[#262422] pb-5">
+      <div class="flex items-center gap-3">
+        <span class="ligne-caption">PORTFOLIO</span>
+        <span class="text-xl font-extrabold tracking-tight">cuong.do</span>
+        <span class="text-xs text-neutral-500 hidden sm:inline font-serif italic">— Notes from a software journey</span>
+      </div>
+      <nav class="flex items-center gap-3 text-xs font-bold">
+        <a href="#about" class="px-3 py-1.5 rounded-lg hover:bg-[#ede8df] transition-colors">About</a>
+        <a href="#blog" class="px-3 py-1.5 rounded-lg hover:bg-[#ede8df] transition-colors">Writings</a>
+        <a href="https://github.com/cuongdc03" target="_blank" class="ligne-btn px-3 py-1.5 text-xs">GitHub ↗</a>
+      </nav>
+    </header>
+
+    <!-- Hero Story Spread -->
+    <section class="ligne-panel p-6 sm:p-10 bg-white">
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
+        <!-- Bio -->
+        <div class="md:col-span-7 space-y-5">
+          <div>
+            <div class="ligne-balloon text-xs font-semibold text-[#262422]">
+              "Bonjour! Welcome to my engineering sketchbook."
+            </div>
+          </div>
+
+          <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight text-[#262422] leading-tight">
+            Hi, I'm Cao-Cuong.
+          </h1>
+
+          <p class="text-base text-[#4a4742] leading-relaxed font-normal">
+            I am a software engineer captivated by operating systems, containers, and distributed state machines. I write clear mental models to demystify complex systems.
+          </p>
+
+          <div class="flex items-center gap-3 pt-2">
+            <a href="#blog" class="ligne-btn px-5 py-2.5 text-xs font-bold inline-flex items-center gap-2">
+              <span>Read Articles</span>
+              <span>↓</span>
+            </a>
+            <a href="#about" class="px-4 py-2.5 rounded-xl border-1.5 border-[#262422] text-xs font-bold hover:bg-[#f3efe3] transition-colors">
+              The Backstory
+            </a>
+          </div>
+        </div>
+
+        <!-- Portrait Card -->
+        <div class="md:col-span-5">
+          <div class="relative p-3 bg-[#fdfcf9] border-1.5 border-[#262422] rounded-2xl shadow-[3px_3px_0px_0px_rgba(38,36,34,0.6)]">
+            <div class="aspect-square rounded-xl overflow-hidden border border-[#262422]">
+              <img 
+                src="/images/cuong.jpg" 
+                alt="Cao-Cuong Do"
+                class="w-full h-full object-cover"
+              />
+            </div>
+            <div class="mt-3 flex items-center justify-between text-xs font-mono">
+              <span class="font-bold text-[#262422]">CAO-CUONG DO</span>
+              <span class="text-neutral-500">SAIGON, VN</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Narrative Section Header -->
+    <div class="flex items-center justify-between pt-4">
+      <div>
+        <span class="ligne-caption">CHAPTER ONE</span>
+        <h2 class="text-2xl sm:text-3xl font-extrabold tracking-tight mt-1">Featured Writings</h2>
+      </div>
+      <span class="text-xs font-mono text-neutral-500">ALL ARTICLES (4) →</span>
+    </div>
+
+    <!-- Articles Grid -->
+    <section id="blog" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      
+      <!-- Card 1 -->
+      <article class="ligne-panel p-6 flex flex-col justify-between">
+        <div>
+          <div class="aspect-[16/9] w-full mb-4 overflow-hidden rounded-xl border border-[#262422] bg-[#fdfcf9]">
+            <img 
+              src="/images/docker-containers.jpg" 
+              alt="Docker Containers" 
+              class="w-full h-full object-cover"
+            />
+          </div>
+          <div class="flex items-center gap-2 mb-2 font-mono text-[11px] text-neutral-500">
+            <span class="ligne-caption !py-0.5 !px-2">SYSTEMS</span>
+            <span>SEPTEMBER 2, 2026</span>
+          </div>
+          <h3 class="text-xl font-bold leading-snug hover:underline cursor-pointer">
+            Containers Under the Hood: Linux Namespaces & cgroups
+          </h3>
+          <p class="text-sm text-[#5a5752] mt-2 leading-relaxed">
+            A journey through kernel primitives: understanding how Linux isolates processes and assigns hardware limits.
+          </p>
+        </div>
+        <div class="mt-6 pt-3 border-t border-[#ede8df] flex items-center justify-between text-xs font-bold">
+          <span class="font-mono text-neutral-500">5 MIN READ</span>
+          <span class="hover:underline">Read Story →</span>
+        </div>
+      </article>
+
+      <!-- Card 2 -->
+      <article class="ligne-panel p-6 flex flex-col justify-between">
+        <div>
+          <div class="aspect-[16/9] w-full mb-4 overflow-hidden rounded-xl border border-[#262422] bg-[#fdfcf9]">
+            <img 
+              src="/images/distributed-caching.jpg" 
+              alt="Distributed Caching" 
+              class="w-full h-full object-cover"
+            />
+          </div>
+          <div class="flex items-center gap-2 mb-2 font-mono text-[11px] text-neutral-500">
+            <span class="ligne-caption !py-0.5 !px-2">ARCHITECTURE</span>
+            <span>SEPTEMBER 2, 2026</span>
+          </div>
+          <h3 class="text-xl font-bold leading-snug hover:underline cursor-pointer">
+            Distributed Caching Patterns: Cache-Aside vs Write-Through
+          </h3>
+          <p class="text-sm text-[#5a5752] mt-2 leading-relaxed">
+            Exploring cache invalidation nuances, the thundering herd conundrum, and designing resilient Redis tiers.
+          </p>
+        </div>
+        <div class="mt-6 pt-3 border-t border-[#ede8df] flex items-center justify-between text-xs font-bold">
+          <span class="font-mono text-neutral-500">6 MIN READ</span>
+          <span class="hover:underline">Read Story →</span>
+        </div>
+      </article>
+
+    </section>
+
+    <!-- Colophon -->
+    <footer class="pt-8 border-t-2 border-[#262422] flex flex-col sm:flex-row items-center justify-between text-xs text-neutral-500 gap-4">
+      <div>STYLE 2 // LIGNE CLAIRE (BELGIAN GRAPHIC NOVEL)</div>
+      <div class="flex gap-4 font-bold">
+        <a href="#" class="hover:underline">Back to top ↑</a>
+        <a href="https://github.com/cuongdc03" class="hover:underline">GitHub</a>
+      </div>
+    </footer>
+
+  </div>
+</body>
+</html>

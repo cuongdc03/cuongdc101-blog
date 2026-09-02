@@ -1,0 +1,84 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { Compass, House, Search, BookOpen } from '@lucide/astro';
+---
+
+<BaseLayout
+  title="Lost in Space (404)"
+  description="The page or article you are looking for doesn't exist or has moved."
+>
+  <div class="max-w-2xl mx-auto py-12 sm:py-20 text-center">
+    <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-neutral-900 text-white dark:bg-neutral-100 dark:text-neutral-900 border-2 border-neutral-900 dark:border-neutral-100 mb-6 shadow-[3px_3px_0px_0px_currentColor]">
+      <Compass class="w-8 h-8" />
+    </div>
+
+    <div class="mb-3">
+      <span class="manga-stamp">
+        ERROR // 404
+      </span>
+    </div>
+
+    <h1 class="font-manga text-4xl sm:text-5xl font-black text-neutral-900 dark:text-white tracking-tight mb-4">
+      Lost off the Grid
+    </h1>
+
+    <p class="text-sm sm:text-base text-neutral-600 dark:text-neutral-400 leading-relaxed mb-8 max-w-lg mx-auto font-normal">
+      Looks like you've wandered off the track! The article or page you're searching for might have moved or hasn't been written yet.
+    </p>
+
+    <!-- Helpful Quick Action Buttons -->
+    <div class="flex items-center justify-center gap-3 flex-wrap mb-10 font-mono">
+      <a
+        href="/"
+        class="manga-btn px-4 py-2 text-xs gap-2"
+      >
+        <House class="w-4 h-4" />
+        <span>BACK TO HOME</span>
+      </a>
+
+      <a
+        href="/blog"
+        class="manga-btn-secondary px-4 py-2 text-xs gap-2"
+      >
+        <BookOpen class="w-4 h-4" />
+        <span>READ NOTEBOOK</span>
+      </a>
+
+      <button
+        type="button"
+        data-search-trigger
+        class="manga-btn-secondary px-4 py-2 text-xs gap-2"
+      >
+        <Search class="w-4 h-4" />
+        <span>SEARCH (⌘K)</span>
+      </button>
+    </div>
+
+    <!-- Suggested Starting Points -->
+    <div class="manga-panel p-6 text-left bg-white dark:bg-[#18181c]">
+      <h3 class="text-xs font-mono font-bold uppercase tracking-wider text-neutral-500 mb-3">
+        FEATURED DISPATCHES
+      </h3>
+      <div class="space-y-2 text-sm">
+        <a href="/blog/docker-deep-dive-01-namespaces-cgroups" class="flex items-center justify-between p-2 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors group">
+          <span class="font-bold text-neutral-900 dark:text-white group-hover:underline">
+            Containers Under the Hood: Linux Namespaces & cgroups
+          </span>
+          <span class="text-xs font-mono text-neutral-500">READ →</span>
+        </a>
+        <a href="/blog/distributed-caching-patterns" class="flex items-center justify-between p-2 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors group">
+          <span class="font-bold text-neutral-900 dark:text-white group-hover:underline">
+            Distributed Caching Patterns: Cache-Aside vs Write-Through
+          </span>
+          <span class="text-xs font-mono text-neutral-500">READ →</span>
+        </a>
+        <a href="/blog" class="flex items-center justify-between p-2 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors group">
+          <span class="font-bold text-neutral-900 dark:text-white group-hover:underline">
+            Browse All Technical Articles
+          </span>
+          <span class="text-xs font-mono text-neutral-500">ALL NOTES →</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</BaseLayout>

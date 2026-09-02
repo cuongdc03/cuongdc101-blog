@@ -2,11 +2,8 @@
 title: "Distributed Caching Patterns: Cache-Aside vs Write-Through"
 description: "Deep dive into caching topologies, handling the thundering herd problem, cache invalidation strategies, and Redis data structures."
 pubDate: "2026-09-02"
+heroImage: "/images/distributed-caching.jpg"
 tags: ["system-design", "architecture", "redis", "database"]
-series:
-  id: "system-design"
-  order: 1
-  title: "System Design for Real-World Scalability"
 draft: false
 ---
 
@@ -80,4 +77,4 @@ if (lockAcquired) {
 }
 ```
 
-In the next chapter of this series, we will examine **Write-Behind (Write-Back) Caching** and how to maintain eventual consistency across read replicas.
+In our next writeup, we will examine **Write-Behind (Write-Back) Caching** and how to maintain eventual consistency across read replicas.

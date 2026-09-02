@@ -1,8 +1,0 @@
-{
-  "title": "System Design for Real-World Scalability",
-  "description": "Architecting resilient distributed systems: data partitioning, caching strategies, rate limiting algorithms, and event-driven pipelines.",
-  "icon": "Layers",
-  "level": "Advanced",
-  "estimatedHours": "10 hours",
-  "order": 2
-}

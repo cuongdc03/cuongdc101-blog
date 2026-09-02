@@ -2,7 +2,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import PostCard from '../../components/PostCard.astro';
 import { getCollection } from 'astro:content';
-import { Search, BookOpen } from '@lucide/astro';
+import { Search } from '@lucide/astro';
 
 const allPosts = await getCollection('blog', ({ data }) => !data.draft);
 allPosts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
@@ -12,33 +12,36 @@ const allTags = Array.from(new Set(allPosts.flatMap((p) => p.data.tags))).sort()
 ---
 
 <BaseLayout
-  title="All Articles"
+  title="All Field Notes & Articles"
   description="Explore tutorials, engineering notes, architecture deep dives, and learning journeys."
 >
   <div class="max-w-4xl mx-auto">
     <!-- Header -->
-    <header class="mb-10 pb-6 border-b border-neutral-200 dark:border-neutral-800">
-      <div class="flex items-center gap-2 text-xs font-semibold text-blue-600 dark:text-blue-400 uppercase tracking-wider mb-2">
-        <BookOpen class="w-4 h-4" />
-        <span>Articles & Notes</span>
+    <header class="mb-10 pb-6 border-b-[1.5px] border-neutral-900 dark:border-neutral-100">
+      <div class="flex items-center gap-2 mb-2">
+        <span class="manga-stamp">
+          ARCHIVE // FIELD DISPATCHES
+        </span>
       </div>
-      <h1 class="text-3xl sm:text-4xl font-extrabold text-neutral-900 dark:text-white tracking-tight mb-3">
-        All Articles
+      <h1 class="font-manga text-3xl sm:text-5xl font-black text-neutral-900 dark:text-white tracking-tight mb-3">
+        Field Notes & Dispatches
       </h1>
-      <p class="text-neutral-600 dark:text-neutral-400 text-base sm:text-lg">
-        Explore {allPosts.length} writeups covering system design, cloud infrastructure, developer tools, and learnings.
+      <p class="text-neutral-600 dark:text-neutral-400 text-sm sm:text-base max-w-2xl leading-relaxed font-normal">
+        {allPosts.length} technical writeups covering distributed consensus, Linux container internals, developer ergonomics, and production takeaways.
       </p>
 
       <!-- Quick Search Trigger -->
-      <div class="mt-6 flex items-center justify-between gap-4 flex-wrap">
+      <div class="mt-6">
         <button
           type="button"
           data-search-trigger
-          class="w-full sm:w-auto inline-flex items-center gap-3 px-4 py-2.5 rounded-xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 hover:bg-neutral-100 dark:hover:bg-neutral-800 text-sm text-neutral-500 dark:text-neutral-400 shadow-sm transition-colors"
+          class="manga-btn-secondary w-full sm:max-w-md flex items-center justify-between gap-3 px-4 py-2.5 text-xs font-mono"
         >
-          <Search class="w-4 h-4" />
-          <span>Search articles by title, content, or tag...</span>
-          <kbd class="ml-auto hidden sm:inline-block px-2 py-0.5 rounded bg-neutral-100 dark:bg-neutral-800 font-mono text-xs">⌘K</kbd>
+          <div class="flex items-center gap-2.5">
+            <Search class="w-4 h-4" />
+            <span>SEARCH NOTEBOOK ENTRIES...</span>
+          </div>
+          <kbd class="hidden sm:inline-block px-1.5 py-0.5 border border-neutral-300 dark:border-neutral-700 font-mono text-[10px]">⌘K</kbd>
         </button>
       </div>
     </header>
@@ -46,21 +49,21 @@ const allTags = Array.from(new Set(allPosts.flatMap((p) => p.data.tags))).sort()
     <!-- Tag Filter Bar -->
     {
       allTags.length > 0 && (
-        <div class="mb-8 flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none">
+        <div class="mb-8 flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none font-mono">
           <a
             href="/blog"
-            class="px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-blue-600 text-white shadow-sm shrink-0"
+            class="manga-stamp px-3 py-1.5 shrink-0"
           >
-            All ({allPosts.length})
+            ALL ({allPosts.length})
           </a>
           {allTags.map((tag) => {
             const count = allPosts.filter((p) => p.data.tags.includes(tag)).length;
             return (
               <a
                 href={`/tags/${tag}`}
-                class="px-3.5 py-1.5 rounded-xl text-xs font-medium bg-neutral-100 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 hover:bg-neutral-200 dark:hover:bg-neutral-700 transition-colors shrink-0"
+                class="manga-stamp-outline px-3 py-1.5 text-xs font-bold transition-colors shrink-0 hover:bg-neutral-900 hover:text-white dark:hover:bg-neutral-100 dark:hover:text-neutral-900"
               >
-                #{tag} <span class="text-neutral-400 dark:text-neutral-500 ml-1">({count})</span>
+                #{tag} <span class="opacity-70 ml-1">({count})</span>
               </a>
             );
           })}
@@ -78,8 +81,8 @@ const allTags = Array.from(new Set(allPosts.flatMap((p) => p.data.tags))).sort()
             description={post.data.description}
             pubDate={post.data.pubDate}
             tags={post.data.tags}
-            series={post.data.series}
             body={post.body}
+            heroImage={post.data.heroImage}
           />
         ))
       }

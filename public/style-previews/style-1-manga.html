@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Style 1: Minimalist Manga & Screentone Ink</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=JetBrains+Mono:wght@400;600;700&family=Zen+Kaku+Gothic+New:wght@500;700;900&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Space Grotesk', -apple-system, sans-serif;
+      background-color: #fcfbf7;
+      color: #111111;
+    }
+    .font-mono { font-family: 'JetBrains Mono', monospace; }
+    .font-manga { font-family: 'Zen Kaku Gothic New', sans-serif; }
+    
+    .screentone {
+      background-image: radial-gradient(#111 1px, transparent 1px);
+      background-size: 6px 6px;
+      opacity: 0.15;
+    }
+    
+    .manga-panel {
+      background: #ffffff;
+      border: 1.5px solid #111111;
+      box-shadow: 4px 4px 0px 0px #111111;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .manga-panel:hover {
+      transform: translate(-2px, -2px);
+      box-shadow: 6px 6px 0px 0px #111111;
+    }
+
+    .manga-bubble {
+      position: relative;
+      background: #ffffff;
+      border: 1.5px solid #111111;
+      border-radius: 16px;
+    }
+    .manga-bubble::after {
+      content: '';
+      position: absolute;
+      bottom: -8px;
+      left: 20px;
+      width: 12px;
+      height: 12px;
+      background: #ffffff;
+      border-right: 1.5px solid #111111;
+      border-bottom: 1.5px solid #111111;
+      transform: rotate(45deg);
+    }
+
+    .manga-stamp {
+      display: inline-flex;
+      align-items: center;
+      padding: 2px 8px;
+      border: 1px solid #111111;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      background: #111111;
+      color: #fcfbf7;
+    }
+  </style>
+</head>
+<body class="min-h-screen py-10 px-4 sm:px-8">
+  <div class="max-w-4xl mx-auto space-y-12">
+    
+    <!-- Top Manga Masthead -->
+    <header class="flex items-center justify-between border-b-2 border-neutral-900 pb-4">
+      <div class="flex items-center gap-3">
+        <span class="manga-stamp">ISSUE 01</span>
+        <span class="font-manga text-xl font-black tracking-tighter">CUONG.LOG</span>
+        <span class="text-xs font-mono text-neutral-500 hidden sm:inline">// DEV PORTFOLIO</span>
+      </div>
+      <nav class="flex items-center gap-4 text-xs font-mono font-bold">
+        <a href="#about" class="hover:underline">ABOUT</a>
+        <a href="#blog" class="hover:underline">DISPATCHES</a>
+        <a href="https://github.com/cuongdc03" target="_blank" class="px-2.5 py-1 border border-neutral-900 hover:bg-neutral-900 hover:text-white transition-colors">GITHUB ↗</a>
+      </nav>
+    </header>
+
+    <!-- Hero Section: Manga Opening Spread -->
+    <section class="grid grid-cols-1 md:grid-cols-12 gap-8 items-center pt-2">
+      <!-- Left: Character Bio -->
+      <div class="md:col-span-7 space-y-4">
+        <div class="inline-block">
+          <div class="manga-bubble px-4 py-2 font-mono text-xs font-bold">
+            「 Welcome to my public laboratory! 」
+          </div>
+        </div>
+
+        <h1 class="text-4xl sm:text-5xl font-manga font-black tracking-tight leading-tight text-neutral-900">
+          Cao-Cuong Do
+        </h1>
+
+        <p class="text-sm sm:text-base text-neutral-700 leading-relaxed font-normal">
+          Full-stack engineer crafting resilient distributed systems and dissecting Linux container internals. Documenting real-world production lessons one chapter at a time.
+        </p>
+
+        <!-- Manga Spec Box -->
+        <div class="border border-neutral-900 p-3.5 bg-white space-y-2 text-xs font-mono">
+          <div class="flex justify-between border-b border-neutral-200 pb-1.5">
+            <span class="text-neutral-500">CLASS:</span>
+            <span class="font-bold">SYSTEMS BUILDER</span>
+          </div>
+          <div class="flex justify-between border-b border-neutral-200 pb-1.5">
+            <span class="text-neutral-500">BASE CAMP:</span>
+            <span class="font-bold">SAIGON (UTC+7)</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-neutral-500">CURRENT QUEST:</span>
+            <span class="font-bold">CONSENSUS & CONTAINERS</span>
+          </div>
+        </div>
+
+        <div class="pt-2 flex items-center gap-3">
+          <a href="#blog" class="px-4 py-2 bg-neutral-900 text-white font-mono text-xs font-bold hover:bg-neutral-800 transition-colors">
+            READ NOTEBOOK ↓
+          </a>
+          <a href="#about" class="px-4 py-2 border border-neutral-900 font-mono text-xs font-bold hover:bg-neutral-100 transition-colors">
+            CHARACTER DOSSIER
+          </a>
+        </div>
+      </div>
+
+      <!-- Right: Manga Ink Photo Panel -->
+      <div class="md:col-span-5">
+        <div class="relative manga-panel p-3 bg-white">
+          <div class="absolute inset-0 screentone pointer-events-none"></div>
+          <div class="relative aspect-square overflow-hidden border border-neutral-900 bg-neutral-100">
+            <img 
+              src="/images/cuong.jpg" 
+              alt="Cuong" 
+              class="w-full h-full object-cover grayscale contrast-125 hover:grayscale-0 transition-all duration-300"
+            />
+          </div>
+          <div class="mt-2.5 flex items-center justify-between text-[10px] font-mono font-bold text-neutral-600">
+            <span>FIGURE 1.0 — AUTHOR</span>
+            <span class="text-neutral-400">SAIGON // ACTIVE</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section Header -->
+    <div class="relative py-4 flex items-center justify-center">
+      <div class="absolute inset-0 flex items-center"><div class="w-full border-t border-neutral-900"></div></div>
+      <span class="relative bg-[#fcfbf7] px-4 font-mono text-xs font-bold tracking-widest uppercase">
+        RECENT DISPATCHES
+      </span>
+    </div>
+
+    <!-- Blog Posts Grid: Manga Panels -->
+    <section id="blog" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <!-- Card 1 -->
+      <article class="manga-panel p-5 flex flex-col justify-between">
+        <div>
+          <div class="aspect-[16/9] w-full mb-3 overflow-hidden border border-neutral-900 bg-neutral-100">
+            <img 
+              src="/images/docker-containers.jpg" 
+              alt="Docker" 
+              class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-300"
+            />
+          </div>
+          <div class="flex items-center gap-2 mb-2 font-mono text-[10px] text-neutral-500">
+            <span class="manga-stamp">LOG 01</span>
+            <span>2026-09-02</span>
+            <span>•</span>
+            <span>5 MIN READ</span>
+          </div>
+          <h2 class="font-manga text-lg font-black leading-snug hover:underline cursor-pointer">
+            Containers Under the Hood: Linux Namespaces & cgroups
+          </h2>
+          <p class="text-xs text-neutral-600 mt-2 leading-relaxed">
+            Demystifying process isolation boundaries, UTS, PID, and memory limits inside modern container runtimes.
+          </p>
+        </div>
+        <div class="mt-4 pt-3 border-t border-neutral-200 flex items-center justify-between text-xs font-mono font-bold">
+          <span>#DOCKER #LINUX</span>
+          <span>READ →</span>
+        </div>
+      </article>
+
+      <!-- Card 2 -->
+      <article class="manga-panel p-5 flex flex-col justify-between">
+        <div>
+          <div class="aspect-[16/9] w-full mb-3 overflow-hidden border border-neutral-900 bg-neutral-100">
+            <img 
+              src="/images/distributed-caching.jpg" 
+              alt="Caching" 
+              class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-300"
+            />
+          </div>
+          <div class="flex items-center gap-2 mb-2 font-mono text-[10px] text-neutral-500">
+            <span class="manga-stamp">LOG 02</span>
+            <span>2026-09-02</span>
+            <span>•</span>
+            <span>6 MIN READ</span>
+          </div>
+          <h2 class="font-manga text-lg font-black leading-snug hover:underline cursor-pointer">
+            Distributed Caching Patterns: Cache-Aside vs Write-Through
+          </h2>
+          <p class="text-xs text-neutral-600 mt-2 leading-relaxed">
+            Mitigating the thundering herd problem, choosing invalidation strategies, and scaling Redis under load.
+          </p>
+        </div>
+        <div class="mt-4 pt-3 border-t border-neutral-200 flex items-center justify-between text-xs font-mono font-bold">
+          <span>#REDIS #SYSTEM-DESIGN</span>
+          <span>READ →</span>
+        </div>
+      </article>
+    </section>
+
+    <!-- Footer -->
+    <footer class="pt-8 border-t-2 border-neutral-900 flex flex-col sm:flex-row items-center justify-between text-xs font-mono text-neutral-500 gap-4">
+      <div>STYLE 1 // MINIMALIST MANGA & SCREENTONE INK</div>
+      <div class="flex gap-4">
+        <a href="#" class="hover:underline">TOP ↑</a>
+        <a href="https://github.com/cuongdc03" class="hover:underline">GITHUB</a>
+      </div>
+    </footer>
+  </div>
+</body>
+</html>

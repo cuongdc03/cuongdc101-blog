@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>5 Soft Monocolor Comic Portfolio Styles — Interactive Showcase</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800&family=JetBrains+Mono:wght@600;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: #121214;
+      color: #f4f4f5;
+    }
+    .font-mono { font-family: 'JetBrains Mono', monospace; }
+    
+    .tab-btn {
+      transition: all 0.15s ease;
+    }
+    .tab-btn.active {
+      background-color: #f4f4f5;
+      color: #121214;
+      box-shadow: 0 0 0 2px #f4f4f5;
+    }
+  </style>
+</head>
+<body class="h-screen flex flex-col overflow-hidden">
+
+  <!-- Top Controller Bar -->
+  <header class="bg-[#18181b] border-b border-neutral-800 px-4 sm:px-6 py-3 shrink-0 flex flex-col md:flex-row items-center justify-between gap-3 z-30">
+    <div class="flex items-center gap-3">
+      <span class="px-2 py-0.5 rounded bg-neutral-800 border border-neutral-700 font-mono text-[11px] font-bold text-neutral-300">
+        STYLE LAB
+      </span>
+      <h1 class="text-sm font-bold text-white tracking-tight hidden sm:inline">
+        5 Comic Portfolio Styles
+      </h1>
+      <span class="text-xs text-neutral-400 font-mono hidden lg:inline">// Soft, monocolor, comic options</span>
+    </div>
+
+    <!-- 5 Style Switcher Tabs -->
+    <div class="flex items-center gap-1.5 overflow-x-auto max-w-full pb-1 sm:pb-0 scrollbar-none">
+      <button onclick="switchStyle('style-1-manga.html', this, 'Style 1: Minimalist Manga & Screentone Ink')" class="tab-btn active px-3 py-1.5 rounded-lg text-xs font-mono font-bold bg-neutral-800 text-neutral-300 hover:text-white shrink-0">
+        1. Manga Ink
+      </button>
+      <button onclick="switchStyle('style-2-ligne-claire.html', this, 'Style 2: Ligne Claire (Clean-Line Graphic Novel)')" class="tab-btn px-3 py-1.5 rounded-lg text-xs font-mono font-bold bg-neutral-800 text-neutral-300 hover:text-white shrink-0">
+        2. Ligne Claire
+      </button>
+      <button onclick="switchStyle('style-3-sketchbook.html', this, 'Style 3: Hand-Drawn Sketchbook & Studio Zine')" class="tab-btn px-3 py-1.5 rounded-lg text-xs font-mono font-bold bg-neutral-800 text-neutral-300 hover:text-white shrink-0">
+        3. Sketchbook Zine
+      </button>
+      <button onclick="switchStyle('style-4-soft-pop.html', this, 'Style 4: Soft Neo-Comic & Playful Pop')" class="tab-btn px-3 py-1.5 rounded-lg text-xs font-mono font-bold bg-neutral-800 text-neutral-300 hover:text-white shrink-0">
+        4. Soft Pop
+      </button>
+      <button onclick="switchStyle('style-5-editorial.html', this, 'Style 5: Editorial Graphic Essay & Sunday Strip')" class="tab-btn px-3 py-1.5 rounded-lg text-xs font-mono font-bold bg-neutral-800 text-neutral-300 hover:text-white shrink-0">
+        5. Editorial Strip
+      </button>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="flex items-center gap-2">
+      <a id="direct-link" href="style-1-manga.html" target="_blank" class="px-3 py-1.5 rounded-lg bg-neutral-800 hover:bg-neutral-700 text-neutral-300 hover:text-white text-xs font-mono font-bold transition-colors inline-flex items-center gap-1.5">
+        <span>Open Standalone</span>
+        <span>↗</span>
+      </a>
+    </div>
+  </header>
+
+  <!-- Current Style Banner -->
+  <div id="style-info-bar" class="bg-[#1f1f23] border-b border-neutral-800 px-6 py-2 text-xs font-mono flex items-center justify-between text-neutral-400 shrink-0">
+    <div class="flex items-center gap-2">
+      <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+      <span id="current-title" class="text-white font-bold">Style 1: Minimalist Manga & Screentone Ink</span>
+    </div>
+    <span class="text-[11px] text-neutral-500 hidden sm:inline">Use the tabs above to switch styles instantly</span>
+  </div>
+
+  <!-- Live Preview Iframe Container -->
+  <main class="flex-1 w-full bg-[#0a0a0c] relative">
+    <iframe id="preview-frame" src="style-1-manga.html" class="w-full h-full border-none"></iframe>
+  </main>
+
+  <script>
+    function switchStyle(file, btn, title) {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById('preview-frame').src = file;
+      document.getElementById('direct-link').href = file;
+      document.getElementById('current-title').innerText = title;
+    }
+  </script>
+</body>
+</html>

@@ -1,8 +1,0 @@
-{
-  "title": "Docker & Containerization Deep Dive",
-  "description": "From understanding Linux namespaces and cgroups to rock-solid multi-stage builds, rootless containers, and production networking.",
-  "icon": "Box",
-  "level": "Intermediate",
-  "estimatedHours": "6 hours",
-  "order": 1
-}
