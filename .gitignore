@@ -19,5 +19,8 @@ Thumbs.db
 .env*
 
 # Agent skills cache
-.agents/
+.agents/*
+!.agents/skills/
+.agents/skills/*
+!.agents/skills/documenting/
 skills-lock.json
