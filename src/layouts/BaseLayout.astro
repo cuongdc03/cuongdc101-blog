@@ -75,6 +75,8 @@ const { title, description, image, articleDate } = Astro.props;
         const codeBlocks = document.querySelectorAll('pre');
         codeBlocks.forEach((pre) => {
           if (pre.dataset.hasCopyButton) return;
+          // Do not add copy buttons to Mermaid diagram blocks
+          if (pre.matches('[data-language="mermaid"], .mermaid') || pre.querySelector('code.language-mermaid')) return;
           pre.dataset.hasCopyButton = 'true';
           pre.classList.add('relative', 'group');
 
